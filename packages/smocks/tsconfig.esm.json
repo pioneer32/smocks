@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig.json",
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "module": "ESNext",
+    "outDir": "dist/esm"
+  },
+  "include": ["./src"],
+  "exclude": ["node_modules", "./src/cli.ts"]
+}

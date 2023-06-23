@@ -1,0 +1,24 @@
+{
+  "name": "@pioneer32/smocks-test",
+  "version": "0.0.1",
+  "license": "MIT",
+  "author": "Vlad Churakov",
+  "private": true,
+  "scripts": {
+    "test": "FORCE_COLOR=1 npm exec jest --runInBand",
+    "test:watch": "FORCE_COLOR=1 npm exec jest --watch",
+    "typecheck": "$(npm bin)/tsc -noEmit"
+  },
+  "type": "module",
+  "main": "",
+  "dependencies": {
+    "@pioneer32/smocks": "0.0.1",
+    "node-fetch": "<3"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.6.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

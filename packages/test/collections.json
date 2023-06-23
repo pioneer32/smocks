@@ -1,0 +1,16 @@
+[
+  {
+    "id": "base",
+    "routes": ["LOGIN_PAGE:success", "LOGIN_PAGE_POST:success", "GET_USER:success", "LOGOUT:success"]
+  },
+  {
+    "id": "wrong-password",
+    "from": "base",
+    "routes": ["LOGIN_PAGE_POST:wrong-password", "GET_USER:unauthenticated", "LOGOUT:unauthenticated"]
+  },
+  {
+    "id": "unauthenticated",
+    "from": "base",
+    "routes": ["GET_USER:unauthenticated", "LOGOUT:unauthenticated"]
+  }
+]

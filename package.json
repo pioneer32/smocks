@@ -1,0 +1,59 @@
+{
+  "name": "@pioneer32/smocks",
+  "version": "0.0.1",
+  "main": "",
+  "author": "Vlad Churakov",
+  "private": true,
+  "scripts": {
+    "start": "while true; do lerna run start --parallel --stream; done",
+    "start:mock-api": "while true; do lerna run start --scope mock-api --parallel --stream; done",
+    "start:customer-portal": "while true; do lerna run start --scope customer-portal --stream; done",
+    "start:agent-portal": "while true; do lerna run start --scope agent-portal --stream; done",
+    "test": "lerna run test --stream",
+    "typecheck": "lerna run typecheck --stream",
+    "predeploy": "npm run deploy:intrastructure",
+    "deploy": "lerna run deploy --scope mock-api --stream && npm run deploy:customer-portal",
+    "deploy:intrastructure": "lerna run deploy --scope infrastructure --stream",
+    "predeploy:customer-portal": "npm run deploy:intrastructure",
+    "deploy:customer-portal": "./scripts/deploy-customer-portal.sh",
+    "predeploy:agent-portal": "npm run deploy:intrastructure",
+    "deploy:agent-portal": "lerna run deploy --scope agent-portal --stream",
+    "remove": "npm run remove:customer-portal && lerna run remove --scope mock-api --stream",
+    "postremove": "npm run remove:intrastructure",
+    "remove:intrastructure": "lerna run remove --scope infrastructure --stream",
+    "remove:customer-portal": "./scripts/remove-customer-portal.sh",
+    "postremove:customer-portal": "npm run remove:intrastructure"
+  },
+  "type": "module",
+  "devDependencies": {
+    "chalk": "^5.2.0",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^18.15.11",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "change-case": "^4.1.2",
+    "concurrently": "^7.6.0",
+    "eslint": "^7.25.0",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-ts-important-stuff": "^1.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "jest": "^29.1.0",
+    "jest-cli": "^29.1.0",
+    "prettier": "^2.8.8",
+    "lerna": "^7.0.2",
+    "ts-node": "^10.9.1",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.0.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ],
+    "nohoist": []
+  }
+}
