@@ -2,6 +2,7 @@
 
 import { Command } from 'commander';
 import SmocksServer from './SmocksServer';
+import { promises as fs } from 'fs';
 
 const program = new Command();
 
@@ -14,6 +15,106 @@ program
   .action((opts, _cmd) => {
     const server = new SmocksServer({ port: +opts.port });
     server.start();
+  });
+
+program
+  .command('init')
+  .description('Initialise an empty Smocks Project')
+  .action(async (_opts, _cmd) => {
+    await fs.writeFile(
+      './collections.json',
+      JSON.stringify(
+        [
+          {
+            id: 'base',
+            routes: ['HOME:success', 'API:success'],
+          },
+          {
+            id: 'unauthenticated',
+            from: 'base',
+            routes: ['API:unauthenticated'],
+          },
+        ],
+        null,
+        2
+      )
+    );
+
+    await fs.mkdir('./routes');
+    await fs.writeFile(
+      './routes/home.ts',
+      `import { RouteConfig } from '@pioneer32/smocks';
+
+const routes: RouteConfig[] = [
+  {
+    id: 'HOME',
+    url: '/',
+    method: 'GET',
+    variants: [
+      {
+        id: 'success',
+        type: 'middleware',
+        options: {
+          async middleware(_req, res, next) {
+            res.status(200);
+            res.send(\`<!DOCTYPE html>
+<html>
+    <head>
+        <title>Home Page</title>
+    </head>
+    <body>
+        <h1>Welcome to Test Home Page</h1>
+    </body>
+</html>
+\`);
+            next();
+          },
+        },
+      },
+    ],
+  },
+];
+
+export default routes;
+      `
+    );
+
+    await fs.writeFile(
+      './routes/api.ts',
+      `import { RouteConfig } from '@pioneer32/smocks';
+
+const routes: RouteConfig[] = [
+  {
+    id: 'API',
+    url: '/api/user',
+    method: 'GET',
+    variants: [
+      {
+        id: 'success',
+        type: 'json',
+        options: {
+          status: 200,
+          body: {
+              id: 1,
+              email: 'foo@bar.baz',
+          },
+        },
+      },
+      {
+        id: 'unauthenticated',
+        type: 'json',
+        options: {
+          status: 401,
+          body: {},
+        },
+      },
+    ],
+  },
+];
+
+export default routes;
+      `
+    );
   });
 
 program.parse();
