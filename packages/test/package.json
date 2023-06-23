@@ -5,9 +5,9 @@
   "author": "Vlad Churakov",
   "private": true,
   "scripts": {
-    "test": "FORCE_COLOR=1 npm exec jest --runInBand",
-    "test:watch": "FORCE_COLOR=1 npm exec jest --watch",
-    "typecheck": "$(npm bin)/tsc -noEmit"
+    "test": "FORCE_COLOR=1 npm exec -- jest --runInBand",
+    "test:watch": "FORCE_COLOR=1 npm exec -- jest --watch",
+    "typecheck": "npm exec -- tsc -noEmit"
   },
   "type": "module",
   "main": "",

@@ -88,7 +88,7 @@ class SmocksServer {
                 return;
               }
               if (route.body) {
-                route.body
+                route.body;
               }
               if (variant.type === 'middleware') {
                 this.log(name, context.awsRequestId, `${route.method} "${route.url}" -> Delegating to middleware...`);
@@ -214,7 +214,9 @@ class SmocksServer {
 
   private async loadRoutes(): Promise<RouteConfig[]> {
     const files = await fs.readdir(this.opts.routesDir);
-    return (await Promise.all(files.map((filename) => tsImport.load(this.opts.routesDir + '/' + filename)))).map((m) => m.default).flat();
+    return (await Promise.all(files.map((filename) => tsImport.load(this.opts.routesDir + '/' + filename, { compiledJsExtension: 'cjs' }))))
+      .map((m) => m.default)
+      .flat();
   }
 }
 
