@@ -1,4 +1,5 @@
 const nodeExternals = require('webpack-node-externals');
+const ShebangPlugin = require('webpack-shebang-plugin');
 const path = require('path');
 
 module.exports = {
@@ -31,4 +32,5 @@ module.exports = {
       additionalModuleDirs: [path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, '../../node_modules')],
     }),
   ],
+  plugins: [new ShebangPlugin()],
 };
