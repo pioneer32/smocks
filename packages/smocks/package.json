@@ -1,6 +1,6 @@
 {
   "name": "@pioneer32/smocks",
-  "version": "1.0.0-alpha.8",
+  "version": "1.0.0-alpha.9",
   "license": "MIT",
   "author": "Vlad Churakov",
   "scripts": {
@@ -13,7 +13,6 @@
     "test": "FORCE_COLOR=1 npm exec -- jest --runInBand",
     "test:watch": "FORCE_COLOR=1 npm exec -- jest --watch",
     "typecheck": "tsc -noEmit -p ./tsconfig.build.json && tsc -noEmit -p ./tsconfig.test.json",
-
     "prepare": "echo PREPARE",
     "prepublish": "echo PREPUBLISH",
     "prepublishOnly": "echo PREPUBLISH_ONLY"
