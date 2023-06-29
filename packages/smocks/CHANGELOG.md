@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.13](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.12...v1.0.0-alpha.13) (2023-06-29)
+
+### Bug Fixes
+
+- trying to fix esm/cjs import/require issues ([2a4fb12](https://github.com/pioneer32/smocks/commit/2a4fb12089608c32f9451095375c0e10b3c2a2ee))
+
 # [1.0.0-alpha.12](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.11...v1.0.0-alpha.12) (2023-06-29)
 
 **Note:** Version bump only for package @pioneer32/smocks
