@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.7](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.6...v1.0.0-alpha.7) (2023-06-29)
+
+### Bug Fixes
+
+- ERR_REQUIRE_ESM when use "smocks start" ([a6f8e19](https://github.com/pioneer32/smocks/commit/a6f8e190a65db511d9dbd471bce6c356ec16637c))
+
 # [1.0.0-alpha.6](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.5...v1.0.0-alpha.6) (2023-06-29)
 
 **Note:** Version bump only for package @pioneer32/smocks
