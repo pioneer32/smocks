@@ -6,16 +6,15 @@ import { getCurrentInvoke } from '@vendia/serverless-express';
 import { promises as fs } from 'node:fs';
 import DefaultGateway from 'default-gateway';
 import IpAddr from 'ipaddr.js';
-import Address from 'ipaddr.js';
 import os from 'node:os';
 import Console from 'node:console';
-
-import { RawCollection, RouteConfig } from './types';
-import InMemoryCollectionMapper from './InMemoryCollectionMapper';
-import InMemoryStatsStorage from './InMemoryStatsStorage';
-import http from 'http';
-import * as tsImport from 'ts-import';
 import { AddressInfo } from 'net';
+import * as tsImport from 'ts-import';
+import http from 'http';
+
+import { RawCollection, RouteConfig } from './types.js';
+import InMemoryCollectionMapper from './InMemoryCollectionMapper.js';
+import InMemoryStatsStorage from './InMemoryStatsStorage.js';
 
 const toConvenientRoutes = ({ id, from, routes }: RawCollection): Omit<RawCollection, 'routes'> & { routes: Record<string, string> } => ({
   id,
@@ -220,8 +219,8 @@ class SmocksServer {
       }
     } else {
       urls.push(
-        parsedIP.kind() === 'ipv6' && (parsedIP as Address.IPv6).isIPv4MappedAddress()
-          ? prettyPrintURL((parsedIP as Address.IPv6).toIPv4Address().toString())
+        parsedIP.kind() === 'ipv6' && (parsedIP as IpAddr.IPv6).isIPv4MappedAddress()
+          ? prettyPrintURL((parsedIP as IpAddr.IPv6).toIPv4Address().toString())
           : prettyPrintURL(address)
       );
       if (parsedIP.kind() === 'ipv6') {

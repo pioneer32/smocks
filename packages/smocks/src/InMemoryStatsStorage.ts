@@ -1,4 +1,4 @@
-import { IMemoryStatsStorage } from './SmocksServer';
+import { IMemoryStatsStorage } from './SmocksServer.js';
 
 class InMemoryStatsStorage implements IMemoryStatsStorage {
   private storage = new Map<string, string>();

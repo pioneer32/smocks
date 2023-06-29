@@ -25,6 +25,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.ts', '.js'],
+    extensionAlias: {
+      '.js': ['.ts', '.js'],
+    },
   },
   externalsPresets: { node: true },
   externals: [

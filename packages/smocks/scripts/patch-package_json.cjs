@@ -7,4 +7,4 @@ const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'packa
 
 delete packageJson.exports['.'].default;
 
-fs.writeFileSync(path.join(__dirname, '..', 'package.json'), JSON.stringify(packageJson));
+fs.writeFileSync(path.join(__dirname, '..', 'package.json'), JSON.stringify(packageJson, null, 4));

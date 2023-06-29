@@ -1,3 +1,2 @@
-export { default } from "./SmocksServer";
-export { type RouteConfig } from "./types";
-
+export { default } from './SmocksServer.js';
+export { type RouteConfig } from './types.js';

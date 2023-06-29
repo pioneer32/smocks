@@ -1,4 +1,4 @@
-import { ICollectionMapper } from './SmocksServer';
+import { ICollectionMapper } from './SmocksServer.js';
 
 class InMemoryCollectionMapper implements ICollectionMapper {
   private storage = new Map<string, string>();
