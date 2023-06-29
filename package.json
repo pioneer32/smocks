@@ -5,6 +5,7 @@
   "author": "Vlad Churakov",
   "private": true,
   "scripts": {
+    "fix:npm": "find . -type d -name node_modules  -prune | while read d; do rm -r \"$d\"; done; npm i",
     "start": "while true; do lerna run start --parallel --stream; done",
     "start:mock-api": "while true; do lerna run start --scope mock-api --parallel --stream; done",
     "start:customer-portal": "while true; do lerna run start --scope customer-portal --stream; done",
@@ -60,5 +61,8 @@
       "packages/*"
     ],
     "nohoist": []
+  },
+  "overrides": {
+    "typescript": "^5.0.4"
   }
 }
