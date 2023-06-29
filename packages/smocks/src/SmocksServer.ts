@@ -214,7 +214,7 @@ class SmocksServer {
 
   private async internalIP(family: 'v4' | 'v6'): Promise<string | undefined> {
     try {
-      const { gateway } = await (family === 'v6' ? DefaultGateway.gateway6async() : DefaultGateway.gateway4async());
+      const { gateway } = await (family === 'v6' ? DefaultGateway.v6() : DefaultGateway.v4());
       const gatewayIp = IpAddr.parse(gateway);
       for (const addresses of Object.values(os.networkInterfaces()).filter(Boolean)) {
         for (const { cidr } of addresses!) {
