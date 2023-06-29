@@ -58,7 +58,7 @@ class SmocksServer {
   private mockApp: core.Express;
   private adminApp: core.Express;
 
-  private server: http.Server | undefined;
+  private mockServer: http.Server | undefined;
   private adminServer: http.Server | undefined;
 
   constructor(options: SmockServerOptions = {}) {
@@ -77,12 +77,12 @@ class SmocksServer {
   }
 
   async start() {
-    if (this.server) {
+    if (this.mockServer) {
       throw new Error('Smocks is already running');
     }
     await Promise.all([
       new Promise<void>((res) => {
-        this.server = this.mockApp.listen(this.opts.port, res);
+        this.mockServer = this.mockApp.listen(this.opts.port, res);
       }),
       new Promise<void>((res) => {
         this.adminServer = this.adminApp.listen(3001, res);
@@ -90,25 +90,25 @@ class SmocksServer {
     ]);
 
     this.print('info', `Smocks is running at:`);
-    await this.dumpSeverUrls(this.server!, this.opts.type);
+    this.printServerUrlsFor(this.mockServer!, this.opts.type);
     this.print('info', `Smocks ADMIN is running at:`);
-    await this.dumpSeverUrls(this.adminServer!, this.opts.type);
+    this.printServerUrlsFor(this.adminServer!, this.opts.type);
   }
   async stop() {
-    if (!this.server) {
-      throw new Error('Nothing to stop - not running');
+    if (!this.mockServer) {
+      throw new Error('Nothing to stop - Smocks is not running');
     }
     await Promise.all([
       new Promise<void>((res) => {
-        if (!this.server) {
+        if (!this.mockServer) {
           return res();
         }
-        this.server.close((err) => {
+        this.mockServer.close((err) => {
           if (err) {
             this.print('error', err);
             return;
           }
-          this.server = undefined;
+          this.mockServer = undefined;
           res();
         });
       }),
@@ -127,6 +127,20 @@ class SmocksServer {
       }),
     ]);
     this.print('info', 'Smocks stopped');
+  }
+
+  getAdminServerURLs(): string[] {
+    if (!this.adminServer) {
+      throw new Error('Smocks is not running');
+    }
+    return this.getServerUrlsFor(this.adminServer!, this.opts.type);
+  }
+
+  getMockServerURLs(): string[] {
+    if (!this.mockServer) {
+      throw new Error('Smocks is not running');
+    }
+    return this.getServerUrlsFor(this.mockServer!, this.opts.type);
   }
 
   private printServerMessage(name: string | null, reqId: string | null, message: string) {
@@ -171,7 +185,14 @@ class SmocksServer {
       .flat();
   }
 
-  private async dumpSeverUrls(server: http.Server, protocol: 'http' | 'https') {
+  private printServerUrlsFor(server: http.Server, protocol: 'http' | 'https') {
+    for (const url of this.getServerUrlsFor(server, protocol)) {
+      this.print('info', `  ${url}`);
+    }
+  }
+
+  private getServerUrlsFor(server: http.Server, protocol: 'http' | 'https'): string[] {
+    const urls: string[] = [];
     const { address, port } = server.address() as AddressInfo;
     const parsedIP = IpAddr.parse(address);
     const prettyPrintURL = (hostname: string) => {
@@ -183,38 +204,36 @@ class SmocksServer {
     };
 
     if (parsedIP.range() === 'unspecified') {
-      this.print('info', `\tLoopback: ${prettyPrintURL('localhost')}`);
+      urls.push(prettyPrintURL('localhost'));
 
-      const networkIPv4 = await this.internalIP('v4');
+      const networkIPv4 = this.internalIP('v4');
       if (networkIPv4) {
-        this.print('info', `\tOn Your Network (IPv4): ${prettyPrintURL(networkIPv4)}`);
+        urls.push(prettyPrintURL(networkIPv4));
       }
-      const networkIPv6 = await this.internalIP('v6');
+      const networkIPv6 = this.internalIP('v6');
       if (networkIPv6) {
-        this.print('info', `\tOn Your Network (IPv6): ${prettyPrintURL(networkIPv6)}`);
+        urls.push(prettyPrintURL(networkIPv6));
       }
     } else if (parsedIP.range() === 'loopback') {
       if (parsedIP.kind() === 'ipv4' || parsedIP.kind() === 'ipv6') {
-        this.print('info', `\tLoopback: ${prettyPrintURL(parsedIP.toString())}`);
+        urls.push(prettyPrintURL(parsedIP.toString()));
       }
     } else {
-      this.print(
-        'info',
-        `\tOn Your Network (IPv4): ${
-          parsedIP.kind() === 'ipv6' && (parsedIP as Address.IPv6).isIPv4MappedAddress()
-            ? prettyPrintURL((parsedIP as Address.IPv6).toIPv4Address().toString())
-            : prettyPrintURL(address)
-        }`
+      urls.push(
+        parsedIP.kind() === 'ipv6' && (parsedIP as Address.IPv6).isIPv4MappedAddress()
+          ? prettyPrintURL((parsedIP as Address.IPv6).toIPv4Address().toString())
+          : prettyPrintURL(address)
       );
       if (parsedIP.kind() === 'ipv6') {
-        this.print('info', `\tOn Your Network (IPv6): ${prettyPrintURL(address)}`);
+        urls.push(prettyPrintURL(address));
       }
     }
+    return urls;
   }
 
-  private async internalIP(family: 'v4' | 'v6'): Promise<string | undefined> {
+  private internalIP(family: 'v4' | 'v6'): string | undefined {
     try {
-      const { gateway } = await (family === 'v6' ? DefaultGateway.v6() : DefaultGateway.v4());
+      const { gateway } = family === 'v6' ? DefaultGateway.v6.sync() : DefaultGateway.v4.sync();
       const gatewayIp = IpAddr.parse(gateway);
       for (const addresses of Object.values(os.networkInterfaces()).filter(Boolean)) {
         for (const { cidr } of addresses!) {

@@ -34,6 +34,23 @@ describe('Programmatic API', () => {
     };
   };
 
+  it('listens', async () => {
+    expect(server.getMockServerURLs()).toMatchInlineSnapshot(`
+      [
+        "http://localhost:3000/",
+        "http://192.168.1.6:3000/",
+        "http://fe80::1:3000/",
+      ]
+    `);
+    expect(server.getAdminServerURLs()).toMatchInlineSnapshot(`
+      [
+        "http://localhost:3001/",
+        "http://192.168.1.6:3001/",
+        "http://fe80::1:3001/",
+      ]
+    `);
+  });
+
   it('works', async () => {
     expect(await getSessionDetails('default')).toMatchInlineSnapshot(`
       {
