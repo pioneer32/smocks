@@ -36,24 +36,12 @@ const routes: RouteConfig[] = [
     variants: [
       {
         id: 'success',
-        type: 'middleware',
+        type: 'json',
         options: {
-          async middleware(req, res, next) {
-            console.log(req.body)
-            res.status(200);
-            res.send(`<!DOCTYPE html>
-<html>
-    <head>
-        <title>Pseudo IAM login page</title>
-    </head>
-    <body>
-        <h1>Welcome to Pseudo login page</h1>
-        <a href="/?state=fooBar&code=cb485bf">click here to log in</a>
-    </body>
-</html>
-`);
-            next();
+          body: {
+            accessToken: 'foo',
           },
+          status: 200,
         },
       },
     ],

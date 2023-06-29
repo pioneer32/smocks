@@ -12,11 +12,12 @@
   "type": "module",
   "main": "",
   "dependencies": {
-    "@pioneer32/smocks": "1.0.0-alpha.4",
+    "@pioneer32/smocks": "1.0.0-alpha.5",
     "node-fetch": "<3"
   },
   "devDependencies": {
-    "@types/node-fetch": "^2.6.4"
+    "@types/node-fetch": "^2.6.4",
+    "mockdate": "^3.0.5"
   },
   "engines": {
     "node": ">=18.0.0"

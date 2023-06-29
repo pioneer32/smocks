@@ -1,10 +1,12 @@
 import SmocksServer from '@pioneer32/smocks';
 import fetch, { RequestInit } from 'node-fetch';
+import MockDate from 'mockdate';
 
 const server = new SmocksServer();
 
 describe('Programmatic API', () => {
   beforeAll(async () => {
+    MockDate.set(1676886788388);
     await server.start();
   });
 
@@ -17,22 +19,44 @@ describe('Programmatic API', () => {
     });
   };
 
+  const getSessionDetails = async (sessionId: string) => {
+    return await request('http://localhost:3001/session/' + sessionId);
+  };
+
   const request = async (url: string, init?: RequestInit) => {
     // @ts-ignore
     const res = await fetch(url, init);
 
     return {
       status: res.status,
+      contentType: res.headers.get('content-type'),
       text: await res.text(),
     };
   };
 
   it('works', async () => {
+    expect(await getSessionDetails('default')).toMatchInlineSnapshot(`
+      {
+        "contentType": "application/json; charset=utf-8",
+        "status": 200,
+        "text": "{"requests":[]}",
+      }
+    `);
+
     await setCollection('default', 'unauthenticated');
 
-    // try to log in
+    expect(await getSessionDetails('default')).toMatchInlineSnapshot(`
+      {
+        "contentType": "application/json; charset=utf-8",
+        "status": 200,
+        "text": "{"collectionName":"unauthenticated","requests":[]}",
+      }
+    `);
+
+    // open login page => HTTP 200
     expect(await request('http://localhost:3000/login')).toMatchInlineSnapshot(`
       {
+        "contentType": "text/html; charset=utf-8",
         "status": 200,
         "text": "<!DOCTYPE html>
       <html>
@@ -47,19 +71,46 @@ describe('Programmatic API', () => {
       ",
       }
     `);
-    // try to get the user being unauthenticated
+
+    expect(await getSessionDetails('default')).toMatchInlineSnapshot(`
+      {
+        "contentType": "application/json; charset=utf-8",
+        "status": 200,
+        "text": "{"collectionName":"unauthenticated","requests":[{"timestamp":1676886788388,"collection":"unauthenticated","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}}]}",
+      }
+    `);
+
+    // then try to get the user being unauthenticated => HTTP 401
     expect(await request('http://localhost:3000/user')).toMatchInlineSnapshot(`
       {
+        "contentType": "application/json; charset=utf-8",
         "status": 401,
         "text": "{}",
       }
     `);
 
+    expect(await getSessionDetails('default')).toMatchInlineSnapshot(`
+      {
+        "contentType": "application/json; charset=utf-8",
+        "status": 200,
+        "text": "{"collectionName":"unauthenticated","requests":[{"timestamp":1676886788388,"collection":"unauthenticated","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"unauthenticated","route":"GET_USER:unauthenticated","request":{"method":"GET","url":"/user"},"response":{"statusCode":401}}]}",
+      }
+    `);
+
     await setCollection('default', 'base');
 
-    // try to log in
+    expect(await getSessionDetails('default')).toMatchInlineSnapshot(`
+      {
+        "contentType": "application/json; charset=utf-8",
+        "status": 200,
+        "text": "{"collectionName":"base","requests":[{"timestamp":1676886788388,"collection":"unauthenticated","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"unauthenticated","route":"GET_USER:unauthenticated","request":{"method":"GET","url":"/user"},"response":{"statusCode":401}}]}",
+      }
+    `);
+
+    // open login page again => HTTP 200
     expect(await request('http://localhost:3000/login')).toMatchInlineSnapshot(`
       {
+        "contentType": "text/html; charset=utf-8",
         "status": 200,
         "text": "<!DOCTYPE html>
       <html>
@@ -74,6 +125,16 @@ describe('Programmatic API', () => {
       ",
       }
     `);
+
+    expect(await getSessionDetails('default')).toMatchInlineSnapshot(`
+      {
+        "contentType": "application/json; charset=utf-8",
+        "status": 200,
+        "text": "{"collectionName":"base","requests":[{"timestamp":1676886788388,"collection":"unauthenticated","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"unauthenticated","route":"GET_USER:unauthenticated","request":{"method":"GET","url":"/user"},"response":{"statusCode":401}},{"timestamp":1676886788388,"collection":"base","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}}]}",
+      }
+    `);
+
+    // log in => HTTP 200
     expect(
       await request('http://localhost:3000/login', {
         method: 'POST',
@@ -82,29 +143,54 @@ describe('Programmatic API', () => {
       })
     ).toMatchInlineSnapshot(`
       {
-        "status": 404,
-        "text": "<!DOCTYPE html>
-      <html lang="en">
-      <head>
-      <meta charset="utf-8">
-      <title>Error</title>
-      </head>
-      <body>
-      <pre>Cannot POST /login</pre>
-      </body>
-      </html>
-      ",
+        "contentType": "application/json; charset=utf-8",
+        "status": 200,
+        "text": "{"accessToken":"foo"}",
       }
     `);
+
+    expect(await getSessionDetails('default')).toMatchInlineSnapshot(`
+      {
+        "contentType": "application/json; charset=utf-8",
+        "status": 200,
+        "text": "{"collectionName":"base","requests":[{"timestamp":1676886788388,"collection":"unauthenticated","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"unauthenticated","route":"GET_USER:unauthenticated","request":{"method":"GET","url":"/user"},"response":{"statusCode":401}},{"timestamp":1676886788388,"collection":"base","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"base","route":"LOGIN_PAGE_POST:success","request":{"method":"POST","url":"/login"},"response":{"statusCode":200}}]}",
+      }
+    `);
+
+    // let's clean session requests:
+    // @ts-ignore
+    await fetch(`http://localhost:3001/session/default/requests`, {
+      method: 'DELETE',
+    });
+
+    expect(await getSessionDetails('default')).toMatchInlineSnapshot(`
+      {
+        "contentType": "application/json; charset=utf-8",
+        "status": 200,
+        "text": "{"collectionName":"base","requests":[]}",
+      }
+    `);
+
+    // then get the user being unauthenticated => HTTP 200
     expect(await request('http://localhost:3000/user')).toMatchInlineSnapshot(`
       {
+        "contentType": "application/json; charset=utf-8",
         "status": 200,
         "text": "{"id":1,"email":"foo@bar.baz"}",
+      }
+    `);
+
+    expect(await getSessionDetails('default')).toMatchInlineSnapshot(`
+      {
+        "contentType": "application/json; charset=utf-8",
+        "status": 200,
+        "text": "{"collectionName":"base","requests":[{"timestamp":1676886788388,"collection":"base","route":"GET_USER:success","request":{"method":"GET","url":"/user"},"response":{"statusCode":200}}]}",
       }
     `);
   });
 
   afterAll(async () => {
     await server.stop();
+    MockDate.reset();
   });
 });

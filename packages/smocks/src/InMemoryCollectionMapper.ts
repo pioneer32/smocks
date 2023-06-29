@@ -1,4 +1,6 @@
-class InMemoryCollectionMapper {
+import { ICollectionMapper } from './SmocksServer';
+
+class InMemoryCollectionMapper implements ICollectionMapper {
   private storage = new Map<string, string>();
   async getCollectionName(forSessionId: string): Promise<string | undefined> {
     return this.storage.get(forSessionId);
