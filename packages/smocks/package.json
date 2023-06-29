@@ -13,9 +13,8 @@
     "test": "FORCE_COLOR=1 npm exec -- jest --runInBand",
     "test:watch": "FORCE_COLOR=1 npm exec -- jest --watch",
     "typecheck": "tsc -noEmit -p ./tsconfig.build.json && tsc -noEmit -p ./tsconfig.test.json",
-    "prepare": "echo PREPARE",
-    "prepublish": "echo PREPUBLISH",
-    "prepublishOnly": "echo PREPUBLISH_ONLY"
+    "prepublishOnly": "echo PREPUBLISH_ONLY",
+    "postpublish": "echo POSTPUBLISH"
   },
   "publishConfig": {
     "access": "public"
