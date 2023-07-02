@@ -11,6 +11,7 @@ import Console from 'node:console';
 import { AddressInfo } from 'net';
 import * as tsImport from 'ts-import';
 import http from 'http';
+import path from 'node:path';
 
 import { RawCollection, RouteConfig } from './types.js';
 import InMemoryCollectionMapper from './InMemoryCollectionMapper.js';
@@ -46,10 +47,10 @@ type Options = {
 
   statsStorage: IMemoryStatsStorage;
 
-  routesDir: string;
+  projectRoot: string;
 };
 
-export type SmockServerOptions = Partial<Options>;
+export type SmockServerOptions = Partial<Options> & Pick<Options, 'projectRoot'>;
 
 class SmocksServer {
   private opts: Options;
@@ -60,12 +61,11 @@ class SmocksServer {
   private mockServer: http.Server | undefined;
   private adminServer: http.Server | undefined;
 
-  constructor(options: SmockServerOptions = {}) {
+  constructor(options: SmockServerOptions) {
     this.opts = {
       getMockSessionId: async () => 'default',
       collectionMapper: new InMemoryCollectionMapper(),
       statsStorage: new InMemoryStatsStorage(),
-      routesDir: 'routes',
       port: 3000,
       type: 'http',
       ...options,
@@ -142,6 +142,14 @@ class SmocksServer {
     return this.getServerUrlsFor(this.mockServer!, this.opts.type);
   }
 
+  private getCollectionFilePath(): string {
+    return path.resolve(this.opts.projectRoot, 'collections.json');
+  }
+
+  private getRouteFolderPath(): string {
+    return path.resolve(this.opts.projectRoot, 'routes');
+  }
+
   private printServerMessage(name: string | null, reqId: string | null, message: string) {
     this.print('info', [`[${new Date().toISOString()}]`, reqId ? `[${reqId}]` : null, name ? `[${name}]` : null, message].filter(Boolean).join(' '));
   }
@@ -152,7 +160,7 @@ class SmocksServer {
   }
 
   private async loadCollections(): Promise<Record<string, Record<string, string>>> {
-    const rawCollections = JSON.parse((await fs.readFile('collections.json')).toString()) as RawCollection[];
+    const rawCollections = JSON.parse((await fs.readFile(this.getCollectionFilePath())).toString()) as RawCollection[];
     const collections = rawCollections.filter(({ from }) => !from).map(toConvenientRoutes);
     if (!collections.length) {
       throw new Error('There should be at least 1 collection that does not inherit from any other');
@@ -178,10 +186,9 @@ class SmocksServer {
   }
 
   private async loadRoutes(): Promise<RouteConfig[]> {
-    const files = await fs.readdir(this.opts.routesDir);
-    return (await Promise.all(files.map((filename) => tsImport.load(this.opts.routesDir + '/' + filename, { compiledJsExtension: 'cjs' }))))
-      .map((m) => m.default)
-      .flat();
+    const dir = this.getRouteFolderPath();
+    const files = await fs.readdir(dir);
+    return (await Promise.all(files.map((filename) => tsImport.load(dir + '/' + filename, { compiledJsExtension: 'cjs' })))).map((m) => m.default).flat();
   }
 
   private printServerUrlsFor(server: http.Server, protocol: 'http' | 'https') {
@@ -264,6 +271,7 @@ class SmocksServer {
   }
 
   private createMockApp(): core.Express {
+    console.log(express);
     const app = express();
     app.use(BodyParser.urlencoded({ extended: true }));
     app.use((req, res, next) => {

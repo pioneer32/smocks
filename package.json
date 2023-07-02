@@ -10,7 +10,7 @@
     "start:mock-api": "while true; do lerna run start --scope mock-api --parallel --stream; done",
     "start:customer-portal": "while true; do lerna run start --scope customer-portal --stream; done",
     "start:agent-portal": "while true; do lerna run start --scope agent-portal --stream; done",
-    "test": "lerna run test --stream",
+    "test": "lerna run prepack && lerna run test --stream",
     "typecheck": "lerna run typecheck --stream",
     "predeploy": "npm run deploy:intrastructure",
     "deploy": "lerna run deploy --scope mock-api --stream && npm run deploy:customer-portal",

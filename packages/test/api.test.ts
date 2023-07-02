@@ -2,7 +2,7 @@ import SmocksServer from '@pioneer32/smocks';
 import fetch, { RequestInit } from 'node-fetch';
 import MockDate from 'mockdate';
 
-const server = new SmocksServer();
+const server = new SmocksServer({ projectRoot: __dirname });
 
 describe('Programmatic API', () => {
   beforeAll(async () => {

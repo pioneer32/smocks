@@ -2,6 +2,7 @@
   "$schema": "https://json.schemastore.org/tsconfig.json",
   "extends": "../../tsconfig",
   "compilerOptions": {
+    "esModuleInterop": true,
     "moduleResolution": "NodeNext",
     "module": "ES2022",
     "target": "ES2022",

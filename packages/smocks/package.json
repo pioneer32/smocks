@@ -10,7 +10,7 @@
     "prepack:cli": "npm exec -- webpack -c ./webpack.config.cli.cjs",
     "prepack:esm": "tsc -p ./tsconfig.esm.json",
     "prepack:types": "tsc -p ./tsconfig.types.json",
-    "test": "FORCE_COLOR=1 npm exec -- jest --runInBand",
+    "test": "FORCE_COLOR=1 npm exec -- jest --runInBand --passWithNoTests",
     "test:watch": "FORCE_COLOR=1 npm exec -- jest --watch",
     "typecheck": "tsc -noEmit -p ./tsconfig.build.json && tsc -noEmit -p ./tsconfig.test.json",
     "prepublishOnly": "./scripts/patch-package_json.cjs",

@@ -8,6 +8,10 @@ module.exports = {
       },
     ],
   },
+  moduleNameMapper: {
+    '^(\\.\\.?\\/.+)\\.jsx?$': '$1',
+  },
+  extensionsToTreatAsEsm: ['.ts'],
   preset: 'ts-jest',
   setupFilesAfterEnv: [],
   transformIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/../node_modules/'],
