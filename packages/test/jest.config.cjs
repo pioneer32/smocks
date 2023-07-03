@@ -12,7 +12,7 @@ module.exports = {
     '^(\\.\\.?\\/.+)\\.jsx?$': '$1',
   },
   extensionsToTreatAsEsm: ['.ts'],
-  preset: 'ts-jest',
+  preset: 'ts-jest/presets/default-esm',
   setupFilesAfterEnv: [],
   transformIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/../node_modules/'],
   testEnvironment: 'node',

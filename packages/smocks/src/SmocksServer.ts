@@ -3,14 +3,16 @@ import { Request } from 'express-serve-static-core';
 import express, { Router } from 'express';
 import BodyParser from 'body-parser';
 import { getCurrentInvoke } from '@vendia/serverless-express';
-import fsSync, { promises as fs, constants as fsConstants } from 'node:fs';
+import fsSync, { constants as fsConstants, promises as fs } from 'node:fs';
 import DefaultGateway from 'default-gateway';
 import IpAddr from 'ipaddr.js';
 import os from 'node:os';
 import Console from 'node:console';
 import { AddressInfo } from 'net';
 import * as tsImport from 'ts-import';
-import http from 'http';
+import http from 'node:http';
+import https from 'node:https';
+
 import path from 'node:path';
 
 import { RawCollection, RouteConfig } from './types.js';
@@ -28,6 +30,12 @@ export interface ICollectionMapper {
   setCollectionName: (forSessionId: string, collectionName: string) => Promise<void>;
 }
 
+interface IHttpsServerOptions {
+  ca: Buffer;
+  cert: Buffer;
+  key: Buffer;
+}
+
 export interface IMemoryStatsStorage {
   setValue(key: string, value: string): Promise<void>;
   getValue(key: string): Promise<string | undefined>;
@@ -39,7 +47,7 @@ export interface IMemoryStatsStorage {
 
 type Options = {
   port: number;
-  type: 'http' | 'https';
+  https?: false | IHttpsServerOptions;
 
   getMockSessionId: (request: Request) => Promise<string | undefined | void>;
 
@@ -58,8 +66,8 @@ class SmocksServer {
   private mockApp: core.Express;
   private adminApp: core.Express;
 
-  private mockServer: http.Server | undefined;
-  private adminServer: http.Server | undefined;
+  private mockServer: http.Server | https.Server | undefined;
+  private adminServer: http.Server | https.Server | undefined;
 
   constructor(options: SmockServerOptions) {
     this.opts = {
@@ -67,7 +75,7 @@ class SmocksServer {
       collectionMapper: new InMemoryCollectionMapper(),
       statsStorage: new InMemoryStatsStorage(),
       port: 3000,
-      type: 'http',
+      https: false,
       ...options,
     };
 
@@ -84,17 +92,19 @@ class SmocksServer {
     }
     await Promise.all([
       new Promise<void>((res) => {
-        this.mockServer = this.mockApp.listen(this.opts.port, res);
+        this.mockServer = this.opts.https ? https.createServer({ ...this.opts.https }, this.mockApp) : http.createServer(this.mockApp);
+        this.mockServer.listen(this.opts.port, res);
       }),
       new Promise<void>((res) => {
-        this.adminServer = this.adminApp.listen(3001, res);
+        this.adminServer = this.opts.https ? https.createServer({ ...this.opts.https }, this.adminApp) : http.createServer(this.adminApp);
+        this.adminServer.listen(3001, res);
       }),
     ]);
 
     this.print('info', `Smocks is running at:`);
-    this.printServerUrlsFor(this.mockServer!, this.opts.type);
+    this.printServerUrlsFor(this.mockServer!);
     this.print('info', `Smocks ADMIN is running at:`);
-    this.printServerUrlsFor(this.adminServer!, this.opts.type);
+    this.printServerUrlsFor(this.adminServer!);
   }
   async stop() {
     if (!this.mockServer) {
@@ -135,14 +145,14 @@ class SmocksServer {
     if (!this.adminServer) {
       throw new Error('Smocks is not running');
     }
-    return this.getServerUrlsFor(this.adminServer!, this.opts.type);
+    return this.getServerUrlsFor(this.adminServer!);
   }
 
   getMockServerURLs(): string[] {
     if (!this.mockServer) {
       throw new Error('Smocks is not running');
     }
-    return this.getServerUrlsFor(this.mockServer!, this.opts.type);
+    return this.getServerUrlsFor(this.mockServer!);
   }
 
   private getCollectionFilePath(): string {
@@ -209,16 +219,17 @@ class SmocksServer {
       .flat();
   }
 
-  private printServerUrlsFor(server: http.Server, protocol: 'http' | 'https') {
-    for (const url of this.getServerUrlsFor(server, protocol)) {
+  private printServerUrlsFor(server: http.Server | https.Server) {
+    for (const url of this.getServerUrlsFor(server)) {
       this.print('info', `  ${url}`);
     }
   }
 
-  private getServerUrlsFor(server: http.Server, protocol: 'http' | 'https'): string[] {
+  private getServerUrlsFor(server: http.Server | https.Server): string[] {
     const urls: string[] = [];
     const { address, port } = server.address() as AddressInfo;
     const parsedIP = IpAddr.parse(address);
+    const protocol = this.opts.https ? 'https' : 'http';
     const prettyPrintURL = (hostname: string) => {
       let url = `${protocol}://${hostname}`;
       if (port) {

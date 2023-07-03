@@ -6,14 +6,15 @@
   "private": true,
   "scripts": {
     "test": "FORCE_COLOR=1 npm exec -- jest --runInBand",
-    "test:watch": "FORCE_COLOR=1 npm exec -- jest --watch",
-    "typecheck": "npm exec -- tsc -noEmit"
+    "test:watch": "npm exec -- jest --clearCache && FORCE_COLOR=1 npm exec -- jest --watch",
+    "typecheck": "npm exec -- jest --clearCache && npm exec -- tsc -noEmit"
   },
   "type": "module",
   "main": "",
   "dependencies": {
-    "@pioneer32/smocks": "1.0.0-alpha.15",
-    "node-fetch": "<3"
+    "@pioneer32/smocks": "1.0.0-alpha.16",
+    "node-fetch": "<3",
+    "office-addin-dev-certs": "^1.11.4"
   },
   "devDependencies": {
     "@types/node-fetch": "^2.6.4",
