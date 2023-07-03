@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.16](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.15...v1.0.0-alpha.16) (2023-07-03)
+
+### Bug Fixes
+
+- cli crashes ([3a80283](https://github.com/pioneer32/smocks/commit/3a8028340104c22ea258b1968a1b43a6635c0368))
+
 # [1.0.0-alpha.15](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.14...v1.0.0-alpha.15) (2023-07-03)
 
 ### Bug Fixes
