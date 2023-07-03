@@ -3,6 +3,7 @@
 import { Command } from 'commander';
 import SmocksServer from './SmocksServer';
 import { promises as fs } from 'fs';
+import * as process from 'process';
 
 const program = new Command();
 
@@ -12,8 +13,9 @@ program
   .description('Start Smocks Server')
   .option('-p, --port <port>', 'port to listen to for main requests', '3000')
   .option('-ap, --admin-port <port>', 'port to listen to for admin requests', '3001')
+  .option('--project-root <projectRoot>', 'the root directory where "collections.json" and routes are located', process.cwd())
   .action((opts, _cmd) => {
-    const server = new SmocksServer({ port: +opts.port });
+    const server = new SmocksServer({ port: +opts.port, projectRoot: opts.projectRoot });
     server.start();
   });
 

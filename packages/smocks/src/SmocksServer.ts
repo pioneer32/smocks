@@ -3,7 +3,7 @@ import { Request } from 'express-serve-static-core';
 import express, { Router } from 'express';
 import BodyParser from 'body-parser';
 import { getCurrentInvoke } from '@vendia/serverless-express';
-import { promises as fs } from 'node:fs';
+import fsSync, { promises as fs, constants as fsConstants } from 'node:fs';
 import DefaultGateway from 'default-gateway';
 import IpAddr from 'ipaddr.js';
 import os from 'node:os';
@@ -70,6 +70,9 @@ class SmocksServer {
       type: 'http',
       ...options,
     };
+
+    fsSync.accessSync(this.getCollectionFilePath(), fsConstants.R_OK);
+    fsSync.accessSync(this.getRouteFolderPath(), fsConstants.R_OK | fs.constants.X_OK);
 
     this.mockApp = this.createMockApp();
     this.adminApp = this.createAdminApp();
@@ -271,7 +274,6 @@ class SmocksServer {
   }
 
   private createMockApp(): core.Express {
-    console.log(express);
     const app = express();
     app.use(BodyParser.urlencoded({ extended: true }));
     app.use((req, res, next) => {

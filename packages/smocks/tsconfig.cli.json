@@ -2,6 +2,7 @@
   "$schema": "https://json.schemastore.org/tsconfig.json",
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
+    "esModuleInterop": true,
     "isolatedModules": true,
     "module": "commonjs",
     "noEmit": true
