@@ -30,7 +30,7 @@ describe('Programmatic API', () => {
 
     return {
       status: res.status,
-      contentType: res.headers.get('content-type'),
+      headers: [...res.headers.entries()].filter(([name]) => name !== 'date').map(([name, value]) => `${name}: ${value}`),
       text: await res.text(),
     };
   };

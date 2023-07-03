@@ -18,7 +18,16 @@ exports[`Programmatic API listens: getMockServerURLs 1`] = `
 
 exports[`Programmatic API works: response 1`] = `
 {
-  "contentType": "text/html; charset=utf-8",
+  "headers": [
+    "access-control-allow-headers: Content-Type",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
+    "content-length: 239",
+    "content-type: text/html; charset=utf-8",
+    "etag: W/"ef-GqoBVfsUOan2BJEQVtkNGHXXe/0"",
+    "x-powered-by: Express",
+  ],
   "status": 200,
   "text": "<!DOCTYPE html>
 <html>
@@ -36,7 +45,16 @@ exports[`Programmatic API works: response 1`] = `
 
 exports[`Programmatic API works: response 2`] = `
 {
-  "contentType": "application/json; charset=utf-8",
+  "headers": [
+    "access-control-allow-headers: Content-Type",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
+    "content-length: 2",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"",
+    "x-powered-by: Express",
+  ],
   "status": 401,
   "text": "{}",
 }
@@ -44,7 +62,16 @@ exports[`Programmatic API works: response 2`] = `
 
 exports[`Programmatic API works: response 3`] = `
 {
-  "contentType": "text/html; charset=utf-8",
+  "headers": [
+    "access-control-allow-headers: Content-Type",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
+    "content-length: 239",
+    "content-type: text/html; charset=utf-8",
+    "etag: W/"ef-GqoBVfsUOan2BJEQVtkNGHXXe/0"",
+    "x-powered-by: Express",
+  ],
   "status": 200,
   "text": "<!DOCTYPE html>
 <html>
@@ -62,7 +89,16 @@ exports[`Programmatic API works: response 3`] = `
 
 exports[`Programmatic API works: response 4`] = `
 {
-  "contentType": "application/json; charset=utf-8",
+  "headers": [
+    "access-control-allow-headers: Content-Type",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
+    "content-length: 21",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"15-Nu4dwYfMqrnwrA40ueHJAaLX1TI"",
+    "x-powered-by: Express",
+  ],
   "status": 200,
   "text": "{"accessToken":"foo"}",
 }
@@ -70,7 +106,16 @@ exports[`Programmatic API works: response 4`] = `
 
 exports[`Programmatic API works: response 5`] = `
 {
-  "contentType": "application/json; charset=utf-8",
+  "headers": [
+    "access-control-allow-headers: Content-Type",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
+    "content-length: 30",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"1e-Jt5N8Zo27Ib7vhjf1ftLAkggI5E"",
+    "x-powered-by: Express",
+  ],
   "status": 200,
   "text": "{"id":1,"email":"foo@bar.baz"}",
 }
@@ -78,7 +123,13 @@ exports[`Programmatic API works: response 5`] = `
 
 exports[`Programmatic API works: session-details 1`] = `
 {
-  "contentType": "application/json; charset=utf-8",
+  "headers": [
+    "connection: close",
+    "content-length: 15",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"f-XQOV7Ex+Zz6oKU7EkBkfIkg20jQ"",
+    "x-powered-by: Express",
+  ],
   "status": 200,
   "text": "{"requests":[]}",
 }
@@ -86,7 +137,13 @@ exports[`Programmatic API works: session-details 1`] = `
 
 exports[`Programmatic API works: session-details 2`] = `
 {
-  "contentType": "application/json; charset=utf-8",
+  "headers": [
+    "connection: close",
+    "content-length: 50",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"32-CIEAWi/2iMVd+dZF6OdYItOTopU"",
+    "x-powered-by: Express",
+  ],
   "status": 200,
   "text": "{"collectionName":"unauthenticated","requests":[]}",
 }
@@ -94,7 +151,13 @@ exports[`Programmatic API works: session-details 2`] = `
 
 exports[`Programmatic API works: session-details 3`] = `
 {
-  "contentType": "application/json; charset=utf-8",
+  "headers": [
+    "connection: close",
+    "content-length: 209",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"d1-Sj4w7SQiUOimUiEXp4/U3lqtjEU"",
+    "x-powered-by: Express",
+  ],
   "status": 200,
   "text": "{"collectionName":"unauthenticated","requests":[{"timestamp":1676886788388,"collection":"unauthenticated","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}}]}",
 }
@@ -102,7 +165,13 @@ exports[`Programmatic API works: session-details 3`] = `
 
 exports[`Programmatic API works: session-details 4`] = `
 {
-  "contentType": "application/json; charset=utf-8",
+  "headers": [
+    "connection: close",
+    "content-length: 374",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"176-QTTZB1OBQNF6cZn/ypFkieI5Q1E"",
+    "x-powered-by: Express",
+  ],
   "status": 200,
   "text": "{"collectionName":"unauthenticated","requests":[{"timestamp":1676886788388,"collection":"unauthenticated","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"unauthenticated","route":"GET_USER:unauthenticated","request":{"method":"GET","url":"/user"},"response":{"statusCode":401}}]}",
 }
@@ -110,7 +179,13 @@ exports[`Programmatic API works: session-details 4`] = `
 
 exports[`Programmatic API works: session-details 5`] = `
 {
-  "contentType": "application/json; charset=utf-8",
+  "headers": [
+    "connection: close",
+    "content-length: 363",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"16b-ylJ9Z6hvE0Y7c4mgMMogIoePkDE"",
+    "x-powered-by: Express",
+  ],
   "status": 200,
   "text": "{"collectionName":"base","requests":[{"timestamp":1676886788388,"collection":"unauthenticated","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"unauthenticated","route":"GET_USER:unauthenticated","request":{"method":"GET","url":"/user"},"response":{"statusCode":401}}]}",
 }
@@ -118,7 +193,13 @@ exports[`Programmatic API works: session-details 5`] = `
 
 exports[`Programmatic API works: session-details 6`] = `
 {
-  "contentType": "application/json; charset=utf-8",
+  "headers": [
+    "connection: close",
+    "content-length: 512",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"200-U+jF+dTCPZwMKtgy+dhMbYZWT0Y"",
+    "x-powered-by: Express",
+  ],
   "status": 200,
   "text": "{"collectionName":"base","requests":[{"timestamp":1676886788388,"collection":"unauthenticated","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"unauthenticated","route":"GET_USER:unauthenticated","request":{"method":"GET","url":"/user"},"response":{"statusCode":401}},{"timestamp":1676886788388,"collection":"base","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}}]}",
 }
@@ -126,7 +207,13 @@ exports[`Programmatic API works: session-details 6`] = `
 
 exports[`Programmatic API works: session-details 7`] = `
 {
-  "contentType": "application/json; charset=utf-8",
+  "headers": [
+    "connection: close",
+    "content-length: 667",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"29b-bY53OVUb68ISMI8M55LWFQ38BUY"",
+    "x-powered-by: Express",
+  ],
   "status": 200,
   "text": "{"collectionName":"base","requests":[{"timestamp":1676886788388,"collection":"unauthenticated","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"unauthenticated","route":"GET_USER:unauthenticated","request":{"method":"GET","url":"/user"},"response":{"statusCode":401}},{"timestamp":1676886788388,"collection":"base","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"base","route":"LOGIN_PAGE_POST:success","request":{"method":"POST","url":"/login"},"response":{"statusCode":200}}]}",
 }
@@ -134,7 +221,13 @@ exports[`Programmatic API works: session-details 7`] = `
 
 exports[`Programmatic API works: session-details 8`] = `
 {
-  "contentType": "application/json; charset=utf-8",
+  "headers": [
+    "connection: close",
+    "content-length: 39",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"27-8/Q+IbW7jZ2tzRZSTJBF8yo08vI"",
+    "x-powered-by: Express",
+  ],
   "status": 200,
   "text": "{"collectionName":"base","requests":[]}",
 }
@@ -142,7 +235,13 @@ exports[`Programmatic API works: session-details 8`] = `
 
 exports[`Programmatic API works: session-details 9`] = `
 {
-  "contentType": "application/json; charset=utf-8",
+  "headers": [
+    "connection: close",
+    "content-length: 184",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"b8-zeFvSyCx21bNoh0SiV1VNPsExNs"",
+    "x-powered-by: Express",
+  ],
   "status": 200,
   "text": "{"collectionName":"base","requests":[{"timestamp":1676886788388,"collection":"base","route":"GET_USER:success","request":{"method":"GET","url":"/user"},"response":{"statusCode":200}}]}",
 }
