@@ -72,7 +72,7 @@ class SmocksServer {
     };
 
     fsSync.accessSync(this.getCollectionFilePath(), fsConstants.R_OK);
-    fsSync.accessSync(this.getRouteFolderPath(), fsConstants.R_OK | fs.constants.X_OK);
+    fsSync.accessSync(this.getRouteFolderPath(), fsConstants.R_OK | fsConstants.X_OK);
 
     this.mockApp = this.createMockApp();
     this.adminApp = this.createAdminApp();
