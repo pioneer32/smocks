@@ -1,0 +1,149 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Programmatic API listens: getAdminServerURLs 1`] = `
+[
+  "http://localhost:3001/",
+  "http://192.168.1.6:3001/",
+  "http://fe80::1:3001/",
+]
+`;
+
+exports[`Programmatic API listens: getMockServerURLs 1`] = `
+[
+  "http://localhost:3000/",
+  "http://192.168.1.6:3000/",
+  "http://fe80::1:3000/",
+]
+`;
+
+exports[`Programmatic API works: response 1`] = `
+{
+  "contentType": "text/html; charset=utf-8",
+  "status": 200,
+  "text": "<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pseudo IAM login page</title>
+    </head>
+    <body>
+        <h1>Welcome to Pseudo login page</h1>
+        <a href="/?state=fooBar&code=cb485bf">click here to log in</a>
+    </body>
+</html>
+",
+}
+`;
+
+exports[`Programmatic API works: response 2`] = `
+{
+  "contentType": "application/json; charset=utf-8",
+  "status": 401,
+  "text": "{}",
+}
+`;
+
+exports[`Programmatic API works: response 3`] = `
+{
+  "contentType": "text/html; charset=utf-8",
+  "status": 200,
+  "text": "<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pseudo IAM login page</title>
+    </head>
+    <body>
+        <h1>Welcome to Pseudo login page</h1>
+        <a href="/?state=fooBar&code=cb485bf">click here to log in</a>
+    </body>
+</html>
+",
+}
+`;
+
+exports[`Programmatic API works: response 4`] = `
+{
+  "contentType": "application/json; charset=utf-8",
+  "status": 200,
+  "text": "{"accessToken":"foo"}",
+}
+`;
+
+exports[`Programmatic API works: response 5`] = `
+{
+  "contentType": "application/json; charset=utf-8",
+  "status": 200,
+  "text": "{"id":1,"email":"foo@bar.baz"}",
+}
+`;
+
+exports[`Programmatic API works: session-details 1`] = `
+{
+  "contentType": "application/json; charset=utf-8",
+  "status": 200,
+  "text": "{"requests":[]}",
+}
+`;
+
+exports[`Programmatic API works: session-details 2`] = `
+{
+  "contentType": "application/json; charset=utf-8",
+  "status": 200,
+  "text": "{"collectionName":"unauthenticated","requests":[]}",
+}
+`;
+
+exports[`Programmatic API works: session-details 3`] = `
+{
+  "contentType": "application/json; charset=utf-8",
+  "status": 200,
+  "text": "{"collectionName":"unauthenticated","requests":[{"timestamp":1676886788388,"collection":"unauthenticated","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}}]}",
+}
+`;
+
+exports[`Programmatic API works: session-details 4`] = `
+{
+  "contentType": "application/json; charset=utf-8",
+  "status": 200,
+  "text": "{"collectionName":"unauthenticated","requests":[{"timestamp":1676886788388,"collection":"unauthenticated","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"unauthenticated","route":"GET_USER:unauthenticated","request":{"method":"GET","url":"/user"},"response":{"statusCode":401}}]}",
+}
+`;
+
+exports[`Programmatic API works: session-details 5`] = `
+{
+  "contentType": "application/json; charset=utf-8",
+  "status": 200,
+  "text": "{"collectionName":"base","requests":[{"timestamp":1676886788388,"collection":"unauthenticated","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"unauthenticated","route":"GET_USER:unauthenticated","request":{"method":"GET","url":"/user"},"response":{"statusCode":401}}]}",
+}
+`;
+
+exports[`Programmatic API works: session-details 6`] = `
+{
+  "contentType": "application/json; charset=utf-8",
+  "status": 200,
+  "text": "{"collectionName":"base","requests":[{"timestamp":1676886788388,"collection":"unauthenticated","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"unauthenticated","route":"GET_USER:unauthenticated","request":{"method":"GET","url":"/user"},"response":{"statusCode":401}},{"timestamp":1676886788388,"collection":"base","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}}]}",
+}
+`;
+
+exports[`Programmatic API works: session-details 7`] = `
+{
+  "contentType": "application/json; charset=utf-8",
+  "status": 200,
+  "text": "{"collectionName":"base","requests":[{"timestamp":1676886788388,"collection":"unauthenticated","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"unauthenticated","route":"GET_USER:unauthenticated","request":{"method":"GET","url":"/user"},"response":{"statusCode":401}},{"timestamp":1676886788388,"collection":"base","route":"LOGIN_PAGE:success","request":{"method":"GET","url":"/login"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"base","route":"LOGIN_PAGE_POST:success","request":{"method":"POST","url":"/login"},"response":{"statusCode":200}}]}",
+}
+`;
+
+exports[`Programmatic API works: session-details 8`] = `
+{
+  "contentType": "application/json; charset=utf-8",
+  "status": 200,
+  "text": "{"collectionName":"base","requests":[]}",
+}
+`;
+
+exports[`Programmatic API works: session-details 9`] = `
+{
+  "contentType": "application/json; charset=utf-8",
+  "status": 200,
+  "text": "{"collectionName":"base","requests":[{"timestamp":1676886788388,"collection":"base","route":"GET_USER:success","request":{"method":"GET","url":"/user"},"response":{"statusCode":200}}]}",
+}
+`;
