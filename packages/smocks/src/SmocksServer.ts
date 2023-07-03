@@ -191,7 +191,22 @@ class SmocksServer {
   private async loadRoutes(): Promise<RouteConfig[]> {
     const dir = this.getRouteFolderPath();
     const files = await fs.readdir(dir);
-    return (await Promise.all(files.map((filename) => tsImport.load(dir + '/' + filename, { compiledJsExtension: 'cjs' })))).map((m) => m.default).flat();
+    return (
+      await Promise.all(
+        files.map((filename) =>
+          tsImport.load(dir + '/' + filename, {
+            compiledJsExtension: 'cjs',
+            transpileOptions: {
+              cache: {
+                dir: path.join(this.opts.projectRoot, `.cache`, `ts-import`),
+              },
+            },
+          })
+        )
+      )
+    )
+      .map((m) => m.default)
+      .flat();
   }
 
   private printServerUrlsFor(server: http.Server, protocol: 'http' | 'https') {
