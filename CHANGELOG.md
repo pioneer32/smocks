@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.17](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.16...v1.0.0-alpha.17) (2023-07-03)
+
+### Bug Fixes
+
+- ts-import cache location is now always inside project-root ([8c92dbb](https://github.com/pioneer32/smocks/commit/8c92dbb614803f8cb394eb7f1a05ed314e40c5cb))
+
 # [1.0.0-alpha.16](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.15...v1.0.0-alpha.16) (2023-07-03)
 
 ### Bug Fixes
