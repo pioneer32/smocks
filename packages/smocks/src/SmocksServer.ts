@@ -49,6 +49,8 @@ type Options = {
   port: number;
   https?: false | IHttpsServerOptions;
 
+  cors?: boolean;
+
   getMockSessionId: (request: Request) => Promise<string | undefined | void>;
 
   collectionMapper: ICollectionMapper;
@@ -76,6 +78,7 @@ class SmocksServer {
       statsStorage: new InMemoryStatsStorage(),
       port: 3000,
       https: false,
+      cors: true,
       ...options,
     };
 
@@ -348,6 +351,19 @@ class SmocksServer {
       });
       next();
     });
+    if (this.opts.cors || this.opts.cors === undefined) {
+      app.use((req, res, next) => {
+        if (req.method.toUpperCase() === 'OPTIONS') {
+          res.statusCode = 204;
+          res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+          res.setHeader('Access-Control-Allow-Origin', '*');
+          res.setHeader('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
+          res.send();
+          return;
+        }
+        next();
+      });
+    }
     app.all('*', async (req, res, next) => {
       // @ts-ignore
       const { event = {}, context = {} } = getCurrentInvoke();
@@ -372,9 +388,11 @@ class SmocksServer {
               // @ts-ignore
               const { event = {}, context = {} } = getCurrentInvoke();
 
-              res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-              res.setHeader('Access-Control-Allow-Origin', '*');
-              res.setHeader('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
+              if (this.opts.cors || this.opts.cors === undefined) {
+                res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                res.setHeader('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
+              }
               const variant = route.variants.find(({ id }) => id === variantName);
               if (!variant) {
                 res.statusCode = 404;

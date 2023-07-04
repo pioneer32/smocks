@@ -41,9 +41,25 @@ describe('Programmatic API', () => {
     };
   };
 
+  const clearSessionRequests = async (sessionId: string) => {
+    // @ts-ignore
+    await fetch(`https://localhost:3001/session/${sessionId}/requests`, { method: 'DELETE', agent });
+  };
+
   it('listens', async () => {
     expect(server.getMockServerURLs()).toMatchSnapshot('getMockServerURLs');
     expect(server.getAdminServerURLs()).toMatchSnapshot('getAdminServerURLs');
+  });
+
+  it('handles OPTIONS request by default', async () => {
+    expect(await getSessionDetails('default')).toMatchSnapshot('session-details');
+    // preflight OPTIONS to check CORS
+    expect(await request('https://localhost:3000/login', { method: 'OPTIONS' })).toMatchSnapshot('response');
+
+    expect(await getSessionDetails('default')).toMatchSnapshot('session-details');
+
+    // let's clean session requests:
+    await clearSessionRequests('default');
   });
 
   it('works', async () => {
@@ -84,11 +100,7 @@ describe('Programmatic API', () => {
     expect(await getSessionDetails('default')).toMatchSnapshot('session-details');
 
     // let's clean session requests:
-    // @ts-ignore
-    await fetch(`https://localhost:3001/session/default/requests`, {
-      method: 'DELETE',
-      agent,
-    });
+    await clearSessionRequests('default');
 
     expect(await getSessionDetails('default')).toMatchSnapshot('session-details');
 

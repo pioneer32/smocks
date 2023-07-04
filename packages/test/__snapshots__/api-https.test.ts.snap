@@ -1,5 +1,47 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Programmatic API handles OPTIONS request by default: response 1`] = `
+{
+  "headers": [
+    "access-control-allow-headers: Content-Type",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
+    "x-powered-by: Express",
+  ],
+  "status": 204,
+  "text": "",
+}
+`;
+
+exports[`Programmatic API handles OPTIONS request by default: session-details 1`] = `
+{
+  "headers": [
+    "connection: close",
+    "content-length: 15",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"f-XQOV7Ex+Zz6oKU7EkBkfIkg20jQ"",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "{"requests":[]}",
+}
+`;
+
+exports[`Programmatic API handles OPTIONS request by default: session-details 2`] = `
+{
+  "headers": [
+    "connection: close",
+    "content-length: 15",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"f-XQOV7Ex+Zz6oKU7EkBkfIkg20jQ"",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "{"requests":[]}",
+}
+`;
+
 exports[`Programmatic API listens: getAdminServerURLs 1`] = `
 [
   "https://localhost:3001/",
