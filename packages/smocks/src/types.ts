@@ -1,4 +1,6 @@
-import { RequestHandler } from 'express-serve-static-core';
+import { Request, RequestHandler } from 'express-serve-static-core';
+
+import { ICollectionMapper, IMemoryStatsStorage } from './SmocksServer.js';
 
 export type RouteConfig = {
   id: string;
@@ -31,3 +33,21 @@ export type RawCollection = {
 };
 
 export type Collection = Omit<RawCollection, 'from' | 'routes'> & { routes: Record<string, string> };
+
+interface IHttpsServerOptions {
+  ca: Buffer;
+  cert: Buffer;
+  key: Buffer;
+}
+
+export type SmockServerOptions = Partial<{
+  port: number;
+  https?: false | IHttpsServerOptions;
+  cors?: boolean;
+  getMockSessionId: (request: Request) => Promise<string | undefined | void>;
+  collectionMapper: ICollectionMapper;
+  statsStorage: IMemoryStatsStorage;
+  projectRoot: string;
+}>;
+
+export type SmockServerConfiguration = SmockServerOptions | (() => SmockServerOptions | Promise<SmockServerOptions>);

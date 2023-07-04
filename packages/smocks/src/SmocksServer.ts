@@ -12,10 +12,9 @@ import { AddressInfo } from 'net';
 import * as tsImport from 'ts-import';
 import http from 'node:http';
 import https from 'node:https';
-
 import path from 'node:path';
 
-import { RawCollection, RouteConfig } from './types.js';
+import { RawCollection, RouteConfig, SmockServerOptions } from './types.js';
 import InMemoryCollectionMapper from './InMemoryCollectionMapper.js';
 import InMemoryStatsStorage from './InMemoryStatsStorage.js';
 
@@ -30,12 +29,6 @@ export interface ICollectionMapper {
   setCollectionName: (forSessionId: string, collectionName: string) => Promise<void>;
 }
 
-interface IHttpsServerOptions {
-  ca: Buffer;
-  cert: Buffer;
-  key: Buffer;
-}
-
 export interface IMemoryStatsStorage {
   setValue(key: string, value: string): Promise<void>;
   getValue(key: string): Promise<string | undefined>;
@@ -45,22 +38,7 @@ export interface IMemoryStatsStorage {
   removeCollection(key: string): Promise<void>;
 }
 
-type Options = {
-  port: number;
-  https?: false | IHttpsServerOptions;
-
-  cors?: boolean;
-
-  getMockSessionId: (request: Request) => Promise<string | undefined | void>;
-
-  collectionMapper: ICollectionMapper;
-
-  statsStorage: IMemoryStatsStorage;
-
-  projectRoot: string;
-};
-
-export type SmockServerOptions = Partial<Options> & Pick<Options, 'projectRoot'>;
+type Options = Required<SmockServerOptions>;
 
 class SmocksServer {
   private opts: Options;
@@ -71,7 +49,7 @@ class SmocksServer {
   private mockServer: http.Server | https.Server | undefined;
   private adminServer: http.Server | https.Server | undefined;
 
-  constructor(options: SmockServerOptions) {
+  constructor(options: SmockServerOptions & Pick<Options, 'projectRoot'>) {
     this.opts = {
       getMockSessionId: async () => 'default',
       collectionMapper: new InMemoryCollectionMapper(),

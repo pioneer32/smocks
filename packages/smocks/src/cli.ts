@@ -3,21 +3,66 @@
 import { Command } from 'commander';
 import SmocksServer from './SmocksServer';
 import path from 'node:path';
-import { promises as fs } from 'node:fs';
+import fsSync, { constants as fsConstants, promises as fs } from 'node:fs';
 import * as process from 'node:process';
 
 const program = new Command();
+
+const isPromiseLike = (val: any): val is PromiseLike<any> => val.then && typeof val.then === 'function';
+const isFunction = (val: any): val is Function => val && typeof val === 'function';
 
 program
   .name('smocks')
   .command('start')
   .description('Start Smocks Server')
-  .option('-p, --port <port>', 'port to listen to for main requests', '3000')
-  .option('-ap, --admin-port <port>', 'port to listen to for admin requests', '3001')
-  .option('--project-root <projectRoot>', 'the root directory where "collections.json" and routes are located', process.cwd())
+  .option('-p, --port <port>', 'port to listen to for mock server requests (default: 3000)')
+  // .option('-ap, --admin-port <port>', 'port to listen to for admin requests (default: 3001)')
+  .option('--project-root <projectRoot>', 'the root directory where "collections.json" and routes are located (default: the current directory)')
+  .option('-c, --config <configFile>', 'the path to the configuration file')
   .action((opts, _cmd) => {
-    const server = new SmocksServer({ port: +opts.port, projectRoot: path.resolve(opts.projectRoot) });
-    server.start();
+    const defaultServerOptions = {
+      port: 3000,
+      projectRoot: process.cwd(),
+    };
+    (opts.config
+      ? (async () => {
+          const configFile = path.resolve(opts.config);
+          fsSync.accessSync(configFile, fsConstants.R_OK);
+          let config;
+          switch (path.extname(configFile).toLowerCase()) {
+            case '.js':
+            case '.cjs':
+            case '.json': {
+              // @ts-ignore
+              config = __non_webpack_require__(configFile);
+              break;
+            }
+            case '.mjs':
+              throw new Error('ESM config file is not supported yet. Sorry about that.');
+            default:
+              throw new Error('Unsupported config file format');
+          }
+          if (isPromiseLike(config)) {
+            return await config;
+          }
+          if (isFunction(config)) {
+            return await config();
+          }
+          return config;
+        })()
+      : Promise.resolve({})
+    ).then((configFileOptions) => {
+      console.log(configFileOptions);
+      const runOptions = { ...defaultServerOptions, ...configFileOptions };
+      if (+opts.port && Number.isFinite(+opts.port)) {
+        runOptions.port = +opts.port;
+      }
+      if (opts.projectRoot) {
+        runOptions.projectRoot = path.resolve(opts.projectRoot);
+      }
+      const server = new SmocksServer(runOptions);
+      return server.start();
+    });
   });
 
 program

@@ -1,64 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Programmatic API handles OPTIONS request by default: response 1`] = `
-{
-  "headers": [
-    "access-control-allow-headers: Content-Type",
-    "access-control-allow-methods: OPTIONS,POST,GET",
-    "access-control-allow-origin: *",
-    "connection: close",
-    "x-powered-by: Express",
-  ],
-  "status": 204,
-  "text": "",
-}
-`;
-
-exports[`Programmatic API handles OPTIONS request by default: session-details 1`] = `
-{
-  "headers": [
-    "connection: close",
-    "content-length: 15",
-    "content-type: application/json; charset=utf-8",
-    "etag: W/"f-XQOV7Ex+Zz6oKU7EkBkfIkg20jQ"",
-    "x-powered-by: Express",
-  ],
-  "status": 200,
-  "text": "{"requests":[]}",
-}
-`;
-
-exports[`Programmatic API handles OPTIONS request by default: session-details 2`] = `
-{
-  "headers": [
-    "connection: close",
-    "content-length: 15",
-    "content-type: application/json; charset=utf-8",
-    "etag: W/"f-XQOV7Ex+Zz6oKU7EkBkfIkg20jQ"",
-    "x-powered-by: Express",
-  ],
-  "status": 200,
-  "text": "{"requests":[]}",
-}
-`;
-
-exports[`Programmatic API listens: getAdminServerURLs 1`] = `
-[
-  "https://localhost:3001/",
-  "https://192.168.1.6:3001/",
-  "https://fe80::1:3001/",
-]
-`;
-
-exports[`Programmatic API listens: getMockServerURLs 1`] = `
-[
-  "https://localhost:3000/",
-  "https://192.168.1.6:3000/",
-  "https://fe80::1:3000/",
-]
-`;
-
-exports[`Programmatic API works: response 1`] = `
+exports[`CLI dynamic config works: response 1`] = `
 {
   "headers": [
     "access-control-allow-headers: Content-Type",
@@ -67,7 +9,6 @@ exports[`Programmatic API works: response 1`] = `
     "connection: close",
     "content-length: 239",
     "content-type: text/html; charset=utf-8",
-    "etag: W/"ef-GqoBVfsUOan2BJEQVtkNGHXXe/0"",
     "x-powered-by: Express",
   ],
   "status": 200,
@@ -85,13 +26,51 @@ exports[`Programmatic API works: response 1`] = `
 }
 `;
 
-exports[`Programmatic API works: session-details 1`] = `
+exports[`CLI dynamic config works: session-details 1`] = `
 {
   "headers": [
     "connection: close",
     "content-length: 15",
     "content-type: application/json; charset=utf-8",
-    "etag: W/"f-XQOV7Ex+Zz6oKU7EkBkfIkg20jQ"",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "{"requests":[]}",
+}
+`;
+
+exports[`CLI static config works: response 1`] = `
+{
+  "headers": [
+    "access-control-allow-headers: Content-Type",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
+    "content-length: 239",
+    "content-type: text/html; charset=utf-8",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pseudo IAM login page</title>
+    </head>
+    <body>
+        <h1>Welcome to Pseudo login page</h1>
+        <a href="/?state=fooBar&code=cb485bf">click here to log in</a>
+    </body>
+</html>
+",
+}
+`;
+
+exports[`CLI static config works: session-details 1`] = `
+{
+  "headers": [
+    "connection: close",
+    "content-length: 15",
+    "content-type: application/json; charset=utf-8",
     "x-powered-by: Express",
   ],
   "status": 200,

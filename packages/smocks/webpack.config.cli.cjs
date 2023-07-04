@@ -36,4 +36,7 @@ module.exports = {
     }),
   ],
   plugins: [new ShebangPlugin()],
+  optimization: {
+    minimize: false,
+  },
 };
