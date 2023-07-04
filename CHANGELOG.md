@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.19](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.18...v1.0.0-alpha.19) (2023-07-04)
+
+### Features
+
+- Add -c/--config CLI parameter, so that the same options can be passed inside SmocksServer via CLI ([8acf349](https://github.com/pioneer32/smocks/commit/8acf349f5dd1b53089733296d21d60a9e9f5dfd2))
+
 # [1.0.0-alpha.18](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.17...v1.0.0-alpha.18) (2023-07-04)
 
 ### Features
