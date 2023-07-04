@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.18](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.17...v1.0.0-alpha.18) (2023-07-04)
+
+### Features
+
+- Add cors option to enable/disable sending CORS headers automatically. Default is TRUE. ([f2d34c0](https://github.com/pioneer32/smocks/commit/f2d34c0398543feb55fe56b02f2c35a265a85e6b))
+
 # [1.0.0-alpha.17](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.16...v1.0.0-alpha.17) (2023-07-03)
 
 ### Bug Fixes
