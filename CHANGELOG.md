@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.20](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.19...v1.0.0-alpha.20) (2023-07-19)
+
+### Features
+
+- Default CORS is to allow any header ([ed5123b](https://github.com/pioneer32/smocks/commit/ed5123b57f325aa610aeaf5abc1ef3bfc723740c))
+
 # [1.0.0-alpha.19](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.18...v1.0.0-alpha.19) (2023-07-04)
 
 ### Features
