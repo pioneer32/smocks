@@ -3,7 +3,7 @@
 exports[`Programmatic API handles OPTIONS request by default: response 1`] = `
 {
   "headers": [
-    "access-control-allow-headers: Content-Type",
+    "access-control-allow-headers: *",
     "access-control-allow-methods: OPTIONS,POST,GET",
     "access-control-allow-origin: *",
     "connection: close",
@@ -61,7 +61,7 @@ exports[`Programmatic API listens: getMockServerURLs 1`] = `
 exports[`Programmatic API works: response 1`] = `
 {
   "headers": [
-    "access-control-allow-headers: Content-Type",
+    "access-control-allow-headers: *",
     "access-control-allow-methods: OPTIONS,POST,GET",
     "access-control-allow-origin: *",
     "connection: close",

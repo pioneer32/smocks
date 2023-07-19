@@ -3,7 +3,7 @@
 exports[`CLI dynamic config works: response 1`] = `
 {
   "headers": [
-    "access-control-allow-headers: Content-Type",
+    "access-control-allow-headers: *",
     "access-control-allow-methods: OPTIONS,POST,GET",
     "access-control-allow-origin: *",
     "connection: close",
@@ -42,7 +42,7 @@ exports[`CLI dynamic config works: session-details 1`] = `
 exports[`CLI static config works: response 1`] = `
 {
   "headers": [
-    "access-control-allow-headers: Content-Type",
+    "access-control-allow-headers: *",
     "access-control-allow-methods: OPTIONS,POST,GET",
     "access-control-allow-origin: *",
     "connection: close",

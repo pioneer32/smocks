@@ -3,7 +3,7 @@
 exports[`Programmatic API handles OPTIONS request by default: response 1`] = `
 {
   "headers": [
-    "access-control-allow-headers: Content-Type",
+    "access-control-allow-headers: *",
     "access-control-allow-methods: OPTIONS,POST,GET",
     "access-control-allow-origin: *",
     "connection: close",
@@ -61,7 +61,7 @@ exports[`Programmatic API listens: getMockServerURLs 1`] = `
 exports[`Programmatic API works: response 1`] = `
 {
   "headers": [
-    "access-control-allow-headers: Content-Type",
+    "access-control-allow-headers: *",
     "access-control-allow-methods: OPTIONS,POST,GET",
     "access-control-allow-origin: *",
     "connection: close",
@@ -88,7 +88,7 @@ exports[`Programmatic API works: response 1`] = `
 exports[`Programmatic API works: response 2`] = `
 {
   "headers": [
-    "access-control-allow-headers: Content-Type",
+    "access-control-allow-headers: *",
     "access-control-allow-methods: OPTIONS,POST,GET",
     "access-control-allow-origin: *",
     "connection: close",
@@ -105,7 +105,7 @@ exports[`Programmatic API works: response 2`] = `
 exports[`Programmatic API works: response 3`] = `
 {
   "headers": [
-    "access-control-allow-headers: Content-Type",
+    "access-control-allow-headers: *",
     "access-control-allow-methods: OPTIONS,POST,GET",
     "access-control-allow-origin: *",
     "connection: close",
@@ -132,7 +132,7 @@ exports[`Programmatic API works: response 3`] = `
 exports[`Programmatic API works: response 4`] = `
 {
   "headers": [
-    "access-control-allow-headers: Content-Type",
+    "access-control-allow-headers: *",
     "access-control-allow-methods: OPTIONS,POST,GET",
     "access-control-allow-origin: *",
     "connection: close",
@@ -149,7 +149,7 @@ exports[`Programmatic API works: response 4`] = `
 exports[`Programmatic API works: response 5`] = `
 {
   "headers": [
-    "access-control-allow-headers: Content-Type",
+    "access-control-allow-headers: *",
     "access-control-allow-methods: OPTIONS,POST,GET",
     "access-control-allow-origin: *",
     "connection: close",

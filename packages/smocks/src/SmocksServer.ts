@@ -333,7 +333,7 @@ class SmocksServer {
       app.use((req, res, next) => {
         if (req.method.toUpperCase() === 'OPTIONS') {
           res.statusCode = 204;
-          res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+          res.setHeader('Access-Control-Allow-Headers', '*');
           res.setHeader('Access-Control-Allow-Origin', '*');
           res.setHeader('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
           res.send();
@@ -367,7 +367,7 @@ class SmocksServer {
               const { event = {}, context = {} } = getCurrentInvoke();
 
               if (this.opts.cors || this.opts.cors === undefined) {
-                res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+                res.setHeader('Access-Control-Allow-Headers', '*');
                 res.setHeader('Access-Control-Allow-Origin', '*');
                 res.setHeader('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
               }
