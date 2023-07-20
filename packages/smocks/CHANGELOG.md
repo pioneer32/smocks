@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.21](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.20...v1.0.0-alpha.21) (2023-07-20)
+
+### Features
+
+- defaultCollection can now be passed into Smocks server with options ([e0adae4](https://github.com/pioneer32/smocks/commit/e0adae40c4e833b07342c83f0a5b3b7a306b4a7d))
+
 # [1.0.0-alpha.20](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.19...v1.0.0-alpha.20) (2023-07-19)
 
 ### Features
