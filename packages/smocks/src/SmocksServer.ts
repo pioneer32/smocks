@@ -18,6 +18,8 @@ import { RawCollection, RouteConfig, SmockServerOptions } from './types.js';
 import InMemoryCollectionMapper from './InMemoryCollectionMapper.js';
 import InMemoryStatsStorage from './InMemoryStatsStorage.js';
 
+const DEFAULT_COLLECTION = 'base';
+
 const toConvenientRoutes = ({ id, from, routes }: RawCollection): Omit<RawCollection, 'routes'> & { routes: Record<string, string> } => ({
   id,
   ...(from ? { from } : {}),
@@ -57,6 +59,7 @@ class SmocksServer {
       port: 3000,
       https: false,
       cors: true,
+      defaultCollection: options.defaultCollection || DEFAULT_COLLECTION,
       ...options,
     };
 
@@ -150,7 +153,7 @@ class SmocksServer {
 
   private async getCollectionNameForSession(req: Request): Promise<string> {
     const sessionId = await this.opts.getMockSessionId(req);
-    return (sessionId && (await this.opts.collectionMapper.getCollectionName(sessionId))) || 'base';
+    return (sessionId && (await this.opts.collectionMapper.getCollectionName(sessionId))) || this.opts.defaultCollection;
   }
 
   private async loadCollections(): Promise<Record<string, Record<string, string>>> {

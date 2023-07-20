@@ -44,6 +44,7 @@ export type SmockServerOptions = Partial<{
   port: number;
   https?: false | IHttpsServerOptions;
   cors?: boolean;
+  defaultCollection?: string;
   getMockSessionId: (request: Request) => Promise<string | undefined | void>;
   collectionMapper: ICollectionMapper;
   statsStorage: IMemoryStatsStorage;
