@@ -25,6 +25,17 @@ const routes: RouteConfig[] = [
           body: {},
         },
       },
+      {
+        id: 'no-user',
+        type: 'json',
+        options: {
+          status: 404,
+          body: {
+            statusCode: 404,
+            message: 'No user found',
+          },
+        },
+      },
     ],
   },
 ];

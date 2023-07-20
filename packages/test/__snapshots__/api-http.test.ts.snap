@@ -58,6 +58,54 @@ exports[`Programmatic API listens: getMockServerURLs 1`] = `
 ]
 `;
 
+exports[`Programmatic API sends CORS headers by default: response 1`] = `
+{
+  "headers": [
+    "access-control-allow-headers: *",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
+    "content-length: 30",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"1e-Jt5N8Zo27Ib7vhjf1ftLAkggI5E"",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "{"id":1,"email":"foo@bar.baz"}",
+}
+`;
+
+exports[`Programmatic API sends CORS headers by default: response 2`] = `
+{
+  "headers": [
+    "access-control-allow-headers: *",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
+    "content-length: 44",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"2c-OXNP6p7BwtyaodxetDuroEPmVvs"",
+    "x-powered-by: Express",
+  ],
+  "status": 404,
+  "text": "{"statusCode":404,"message":"No user found"}",
+}
+`;
+
+exports[`Programmatic API sends CORS headers by default: session-details 1`] = `
+{
+  "headers": [
+    "connection: close",
+    "content-length: 184",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"b8-zeFvSyCx21bNoh0SiV1VNPsExNs"",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "{"collectionName":"base","requests":[{"timestamp":1676886788388,"collection":"base","route":"GET_USER:success","request":{"method":"GET","url":"/user"},"response":{"statusCode":200}}]}",
+}
+`;
+
 exports[`Programmatic API works: response 1`] = `
 {
   "headers": [

@@ -104,6 +104,20 @@ describe('Programmatic API', () => {
     expect(await getSessionDetails('default')).toMatchSnapshot('session-details');
   });
 
+  it('sends CORS headers by default', async () => {
+    expect(await getSessionDetails('default')).toMatchSnapshot('session-details');
+
+    await setCollection('default', 'base');
+
+    // get the user => HTTP 200
+    expect(await request('http://localhost:3000/user')).toMatchSnapshot('response');
+
+    await setCollection('default', 'no-user');
+
+    // get the user => HTTP 404
+    expect(await request('http://localhost:3000/user')).toMatchSnapshot('response');
+  });
+
   afterAll(async () => {
     await server.stop();
     MockDate.reset();
