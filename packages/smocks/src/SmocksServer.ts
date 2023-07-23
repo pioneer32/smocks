@@ -14,11 +14,12 @@ import http from 'node:http';
 import https from 'node:https';
 import path from 'node:path';
 
-import { RawCollection, RouteConfig, SmockServerOptions } from './types.js';
+import { DelayConfiguration, RawCollection, RouteConfig, SmockServerOptions } from './types.js';
 import InMemoryCollectionMapper from './InMemoryCollectionMapper.js';
 import InMemoryStatsStorage from './InMemoryStatsStorage.js';
 
 const DEFAULT_COLLECTION = 'base';
+const DEFAULT_DELAY = 0;
 
 const toConvenientRoutes = ({ id, from, routes }: RawCollection): Omit<RawCollection, 'routes'> & { routes: Record<string, string> } => ({
   id,
@@ -60,6 +61,7 @@ class SmocksServer {
       https: false,
       cors: true,
       defaultCollection: options.defaultCollection || DEFAULT_COLLECTION,
+      defaultDelay: options.defaultDelay || DEFAULT_DELAY,
       ...options,
     };
 
@@ -339,7 +341,9 @@ class SmocksServer {
           res.setHeader('Access-Control-Allow-Headers', '*');
           res.setHeader('Access-Control-Allow-Origin', '*');
           res.setHeader('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
-          res.send();
+          this.sleep(this.opts.defaultDelay).then(() => {
+            res.send();
+          });
           return;
         }
         next();
@@ -377,6 +381,7 @@ class SmocksServer {
               const variant = route.variants.find(({ id }) => id === variantName);
               if (!variant) {
                 res.statusCode = 404;
+                await this.sleep(this.opts.defaultDelay);
                 res.send();
                 return;
               }
@@ -385,10 +390,12 @@ class SmocksServer {
               }
               if (variant.type === 'middleware') {
                 (req as any).mockType = 'middleware';
+                await this.sleep(variant.options.delay || this.opts.defaultDelay);
                 await variant.options.middleware(req, res, () => {});
                 return;
               }
               (req as any).mockType = 'static';
+              await this.sleep(variant.options.delay || this.opts.defaultDelay);
               res.statusCode = variant.options.status;
               res.setHeader('Content-Type', 'application/json;charset=UTF-8');
               res.send(JSON.stringify(variant.options.body));
@@ -444,6 +451,20 @@ class SmocksServer {
       });
     });
     return app;
+  }
+  private async sleep(delayConfig: DelayConfiguration) {
+    let ms: number;
+    if (!delayConfig) {
+      return;
+    } else if (Array.isArray(delayConfig)) {
+      const min = delayConfig[0] || 0;
+      const max = delayConfig[1] || 15_000;
+      const delta = Math.abs(max - min);
+      ms = Math.random() * delta + Math.min(min, max);
+    } else {
+      ms = delayConfig;
+    }
+    return new Promise((res) => setTimeout(res, ms));
   }
 }
 

@@ -2,6 +2,8 @@ import { Request, RequestHandler } from 'express-serve-static-core';
 
 import { ICollectionMapper, IMemoryStatsStorage } from './SmocksServer.js';
 
+export type DelayConfiguration = number | [number, number] | [undefined, number] | [number, undefined];
+
 export type RouteConfig = {
   id: string;
   url: string;
@@ -12,6 +14,7 @@ export type RouteConfig = {
         id: string;
         type: 'middleware';
         options: {
+          delay?: DelayConfiguration;
           middleware: RequestHandler;
         };
       }
@@ -19,6 +22,7 @@ export type RouteConfig = {
         id: string;
         type: 'json';
         options: {
+          delay?: DelayConfiguration;
           status: number;
           body: any;
         };
@@ -44,6 +48,7 @@ export type SmockServerOptions = Partial<{
   port: number;
   https?: false | IHttpsServerOptions;
   cors?: boolean;
+  defaultDelay?: DelayConfiguration;
   defaultCollection?: string;
   getMockSessionId: (request: Request) => Promise<string | undefined | void>;
   collectionMapper: ICollectionMapper;
