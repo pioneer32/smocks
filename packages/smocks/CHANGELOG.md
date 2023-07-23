@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.22](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.21...v1.0.0-alpha.22) (2023-07-23)
+
+### Features
+
+- Add options.delay and defaultDelay ([52aa114](https://github.com/pioneer32/smocks/commit/52aa11456cf6955f57d938d1e971c4bd3070d4c4))
+
 # [1.0.0-alpha.21](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.20...v1.0.0-alpha.21) (2023-07-20)
 
 ### Features
