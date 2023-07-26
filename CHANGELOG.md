@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.23](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.22...v1.0.0-alpha.23) (2023-07-26)
+
+### Features
+
+- Disable ts-import cache ([a18b11d](https://github.com/pioneer32/smocks/commit/a18b11d37ab53e63e2ee69f94628c82b6a92876f))
+
 # [1.0.0-alpha.22](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.21...v1.0.0-alpha.22) (2023-07-23)
 
 ### Features
