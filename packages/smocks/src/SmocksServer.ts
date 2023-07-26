@@ -191,6 +191,7 @@ class SmocksServer {
       await Promise.all(
         files.map((filename) =>
           tsImport.load(dir + '/' + filename, {
+            useCache: false,
             compiledJsExtension: 'cjs',
             transpileOptions: {
               cache: {
