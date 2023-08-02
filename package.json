@@ -6,24 +6,8 @@
   "private": true,
   "scripts": {
     "fix:npm": "find . -type d -name node_modules  -prune | while read d; do rm -r \"$d\"; done; npm i",
-    "start": "while true; do lerna run start --parallel --stream; done",
-    "start:mock-api": "while true; do lerna run start --scope mock-api --parallel --stream; done",
-    "start:customer-portal": "while true; do lerna run start --scope customer-portal --stream; done",
-    "start:agent-portal": "while true; do lerna run start --scope agent-portal --stream; done",
     "test": "lerna run prepack && lerna run test --stream",
-    "typecheck": "lerna run typecheck --stream",
-    "predeploy": "npm run deploy:intrastructure",
-    "deploy": "lerna run deploy --scope mock-api --stream && npm run deploy:customer-portal",
-    "deploy:intrastructure": "lerna run deploy --scope infrastructure --stream",
-    "predeploy:customer-portal": "npm run deploy:intrastructure",
-    "deploy:customer-portal": "./scripts/deploy-customer-portal.sh",
-    "predeploy:agent-portal": "npm run deploy:intrastructure",
-    "deploy:agent-portal": "lerna run deploy --scope agent-portal --stream",
-    "remove": "npm run remove:customer-portal && lerna run remove --scope mock-api --stream",
-    "postremove": "npm run remove:intrastructure",
-    "remove:intrastructure": "lerna run remove --scope infrastructure --stream",
-    "remove:customer-portal": "./scripts/remove-customer-portal.sh",
-    "postremove:customer-portal": "npm run remove:intrastructure"
+    "typecheck": "lerna run typecheck --stream"
   },
   "type": "module",
   "devDependencies": {
