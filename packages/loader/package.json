@@ -1,24 +1,32 @@
 {
-  "name": "@pioneer32/smocks-test",
+  "name": "@pioneer32/smocks-loader",
   "version": "0.0.1",
   "license": "MIT",
   "author": "Vlad Churakov",
   "private": true,
   "scripts": {
-    "test": "FORCE_COLOR=1 npm exec -- jest --runInBand",
+    "test": "FORCE_COLOR=1 npm exec -- jest --runInBand --passWithNoTests",
     "test:watch": "npm exec -- jest --clearCache && FORCE_COLOR=1 npm exec -- jest --watch",
     "typecheck": "npm exec -- tsc -noEmit"
   },
   "type": "module",
   "main": "",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./src/*"
+      ]
+    }
+  },
   "dependencies": {
-    "@pioneer32/smocks": "1.0.0-alpha.23",
-    "node-fetch": "<3",
-    "office-addin-dev-certs": "^1.11.4"
   },
   "devDependencies": {
-    "@types/node-fetch": "^2.6.4",
-    "mockdate": "^3.0.5"
   },
   "engines": {
     "node": ">=18.0.0"

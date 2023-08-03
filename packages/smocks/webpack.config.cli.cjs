@@ -33,6 +33,7 @@ module.exports = {
   externals: [
     nodeExternals({
       additionalModuleDirs: [path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, '../../node_modules')],
+      allowlist: [/^@pioneer32\//],
     }),
   ],
   plugins: [new ShebangPlugin()],

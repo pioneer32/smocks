@@ -3,13 +3,14 @@ import { Request } from 'express-serve-static-core';
 import express, { Router } from 'express';
 import BodyParser from 'body-parser';
 import { getCurrentInvoke } from '@vendia/serverless-express';
-import fsSync, { constants as fsConstants, promises as fs } from 'node:fs';
+import { promises as fs } from 'node:fs';
 import DefaultGateway from 'default-gateway';
 import IpAddr from 'ipaddr.js';
 import os from 'node:os';
 import Console from 'node:console';
 import { AddressInfo } from 'net';
-import * as tsImport from 'ts-import';
+import { load } from '@pioneer32/smocks-loader';
+import { dirExistsSync, fileExistsSync } from '@pioneer32/smocks-utils';
 import http from 'node:http';
 import https from 'node:https';
 import path from 'node:path';
@@ -65,8 +66,13 @@ class SmocksServer {
       ...options,
     };
 
-    fsSync.accessSync(this.getCollectionFilePath(), fsConstants.R_OK);
-    fsSync.accessSync(this.getRouteFolderPath(), fsConstants.R_OK | fsConstants.X_OK);
+    if (!fileExistsSync(this.getCollectionFilePath())) {
+      throw new Error(`The collection file is not accessible (${this.getCollectionFilePath()})`);
+    }
+
+    if (!dirExistsSync(this.getRouteFolderPath())) {
+      throw new Error(`The route's directory is not accessible (${this.getRouteFolderPath()})`);
+    }
 
     this.mockApp = this.createMockApp();
     this.adminApp = this.createAdminApp();
@@ -190,14 +196,8 @@ class SmocksServer {
     return (
       await Promise.all(
         files.map((filename) =>
-          tsImport.load(dir + '/' + filename, {
-            useCache: false,
-            compiledJsExtension: 'cjs',
-            transpileOptions: {
-              cache: {
-                dir: path.join(this.opts.projectRoot, `.cache`, `ts-import`),
-              },
-            },
+          load(dir + '/' + filename, {
+            cacheDir: path.join(this.opts.projectRoot, `.cache`),
           })
         )
       )

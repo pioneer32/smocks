@@ -67,7 +67,6 @@ exports[`Programmatic API works: response 1`] = `
     "connection: close",
     "content-length: 239",
     "content-type: text/html; charset=utf-8",
-    "etag: W/"ef-GqoBVfsUOan2BJEQVtkNGHXXe/0"",
     "x-powered-by: Express",
   ],
   "status": 200,

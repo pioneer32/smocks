@@ -24,6 +24,7 @@ describe('CLI', () => {
     const configFile = path.resolve(__dirname, 'config.static.cjs');
     let childProcess: ChildProcessByStdio<null, null, null>;
     beforeAll(async () => {
+      console.log('Starting Smocks CLI as a child process...')
       childProcess = spawn('node', [compiledCliScriptPath, 'start', '-c', configFile], {
         stdio: ['inherit', 'inherit', 'inherit'],
       });

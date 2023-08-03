@@ -52,7 +52,6 @@ program
         })()
       : Promise.resolve({})
     ).then((configFileOptions) => {
-      console.log(configFileOptions);
       const runOptions = { ...defaultServerOptions, ...configFileOptions };
       if (+opts.port && Number.isFinite(+opts.port)) {
         runOptions.port = +opts.port;
