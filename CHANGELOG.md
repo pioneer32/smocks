@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.24](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.23...v1.0.0-alpha.24) (2023-08-03)
+
+### Bug Fixes
+
+- Disable automatic caching responses ([c65d175](https://github.com/pioneer32/smocks/commit/c65d1753fc4505e5fd24f9505e7a18f9370f5a2c))
+- Routes can now be updated without restarting Smocks. Switch from ts-import to an own implementation. ([e82223b](https://github.com/pioneer32/smocks/commit/e82223bb68ce421019769559e8a022ef7d095fc9))
+- Update vulnerable packages ([a9a832b](https://github.com/pioneer32/smocks/commit/a9a832b6f15aa29baa4cfd71c5bbcb56e258943b))
+
 # [1.0.0-alpha.23](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.22...v1.0.0-alpha.23) (2023-07-26)
 
 ### Features
