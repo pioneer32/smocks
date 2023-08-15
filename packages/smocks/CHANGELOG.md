@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.28](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.27...v1.0.0-alpha.28) (2023-08-15)
+
+### Bug Fixes
+
+- building with tsx instead ([2812421](https://github.com/pioneer32/smocks/commit/28124214d8febc292543ca382b61c41b99c440d4))
+
 # [1.0.0-alpha.27](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.26...v1.0.0-alpha.27) (2023-08-15)
 
 **Note:** Version bump only for package @pioneer32/smocks
