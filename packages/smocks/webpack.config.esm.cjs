@@ -3,21 +3,25 @@ const ShebangPlugin = require('webpack-shebang-plugin');
 const path = require('path');
 
 module.exports = {
-  mode: 'production',
-  entry: path.resolve(__dirname, 'src/cli.ts'),
-  output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'cli.cjs',
-    libraryTarget: 'this',
+  experiments: {
+    outputModule: true,
   },
-  target: 'node',
+  mode: 'production',
+  entry: path.resolve(__dirname, 'src/index.ts'),
+  output: {
+    path: path.resolve(__dirname, 'dist', 'esm'),
+    filename: 'index.js',
+    library: {
+      type: 'module',
+    },
+  },
   module: {
     rules: [
       {
         test: /\.ts$/,
         loader: 'ts-loader',
         options: {
-          configFile: path.resolve(__dirname, 'tsconfig.cli.json'),
+          configFile: path.resolve(__dirname, 'tsconfig.esm.json'),
         },
       },
     ],
