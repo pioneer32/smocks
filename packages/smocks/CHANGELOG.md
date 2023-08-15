@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.25](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.24...v1.0.0-alpha.25) (2023-08-15)
+
+### Bug Fixes
+
+- Switch onto bundling with webpack, so that internal packages are bundled in ([634a76b](https://github.com/pioneer32/smocks/commit/634a76b3b337ffa9e5af58445823eb644a2f2ef2))
+
 # [1.0.0-alpha.24](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.23...v1.0.0-alpha.24) (2023-08-03)
 
 ### Bug Fixes
