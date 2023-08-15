@@ -1,7 +1,7 @@
 import * as path from 'node:path';
 import tsc from 'typescript';
 import { promises as fs } from 'node:fs';
-import { fileContentHash, fileExists } from '@pioneer32/smocks-utils';
+import { fileContentHash, fileExists } from './utils.js';
 
 const transpile = async (tsFilePath: string, outputJsFilePath: string) => {
   const tsCode = (await fs.readFile(tsFilePath)).toString();

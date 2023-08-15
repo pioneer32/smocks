@@ -12,7 +12,7 @@
   "type": "module",
   "main": "",
   "dependencies": {
-    "@pioneer32/smocks": "1.0.0-alpha.23",
+    "@pioneer32/smocks": "../smocks",
     "node-fetch": "<3",
     "office-addin-dev-certs": "^1.11.4"
   },
