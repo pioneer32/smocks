@@ -3,6 +3,8 @@ import tsc from 'typescript';
 import { promises as fs } from 'node:fs';
 import { fileContentHash, fileExists } from './utils.js';
 
+const USE_ESM = typeof require === 'undefined';
+
 const transpile = async (tsFilePath: string, outputJsFilePath: string) => {
   const tsCode = (await fs.readFile(tsFilePath)).toString();
   await fs.mkdir(path.dirname(outputJsFilePath), { recursive: true });
@@ -10,7 +12,7 @@ const transpile = async (tsFilePath: string, outputJsFilePath: string) => {
     outputJsFilePath,
     tsc.transpileModule(tsCode.toString(), {
       compilerOptions: {
-        module: tsc.ModuleKind.CommonJS,
+        module: USE_ESM ? tsc.ModuleKind.ESNext : tsc.ModuleKind.CommonJS,
         moduleResolution: tsc.ModuleResolutionKind.Node16,
         target: tsc.ScriptTarget.ES2020,
       },
@@ -25,7 +27,7 @@ export type Options = {
 export const load = async (tsModulePath: string, options: Options = {}) => {
   const cwd = process.cwd();
   const cacheDir: string = options.cacheDir ?? path.join(cwd, '.cache');
-  const compiledJsExtension = 'cjs';
+  const compiledJsExtension = USE_ESM ? 'mjs' : 'cjs';
 
   const tsPath = path.resolve(cwd, tsModulePath);
   const tsFileHash = await fileContentHash(tsPath);
@@ -42,14 +44,14 @@ export const load = async (tsModulePath: string, options: Options = {}) => {
     // cool, this is a bundled with webpack js file
     // @ts-ignore
     return __non_webpack_require__(/*webpackIgnore: true*/ outputJsFilePath);
-  } else if (typeof jest?.requireActual !== 'undefined') {
+  } else if (typeof jest !== 'undefined' && typeof jest?.requireActual !== 'undefined') {
     // cool, this is jest - for more details, see https://github.com/nodejs/node/issues/35889
     // @ts-ignore
     const loaded = jest.requireActual(outputJsFilePath);
     return loaded;
   } else {
     // @ts-ignore
-    const loaded = await import(outputJsFilePath);
+    const loaded = await import(USE_ESM ? 'file://' + outputJsFilePath : outputJsFilePath);
     return loaded;
   }
 };
