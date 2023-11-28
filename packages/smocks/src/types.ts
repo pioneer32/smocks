@@ -30,6 +30,8 @@ export type RouteConfig = {
   )[];
 };
 
+export type SupportedTypes = Exclude<RouteConfig['variants'][number]['type'], 'middleware'>;
+
 export type RawCollection = {
   id: string;
   from?: string;

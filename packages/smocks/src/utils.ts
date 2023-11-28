@@ -37,6 +37,15 @@ export const dirExistsSync = (dirPath: string): boolean => {
   }
 };
 
+export const ensureDirExistsSync = (dirPath: string) => {
+  try {
+    fsSync.accessSync(dirPath, constants.R_OK | constants.X_OK);
+    return;
+  } catch (e) {
+    fsSync.mkdirSync(dirPath);
+  }
+};
+
 export const fileContentHash = (filePath: string): Promise<string> => {
   return new Promise((res, rej) => {
     const stream = fsSync.createReadStream(filePath);

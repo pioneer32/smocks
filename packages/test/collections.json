@@ -1,7 +1,7 @@
 [
   {
     "id": "base",
-    "routes": ["LOGIN_PAGE:success", "LOGIN_PAGE_POST:success", "GET_USER:success", "LOGOUT:success"]
+    "routes": ["LOGIN_PAGE:success", "LOGIN_PAGE_POST:success", "GET_USER:success", "GET_USERS:success", "LOGOUT:success"]
   },
   {
     "id": "wrong-password",

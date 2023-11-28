@@ -58,6 +58,150 @@ exports[`Programmatic API listens: getMockServerURLs 1`] = `
 ]
 `;
 
+exports[`Programmatic API persists fixtures when none is found: fixture 1`] = `
+"[
+  {
+    "id": 1,
+    "name": "foo",
+    "email": "foo@example.com"
+  },
+  {
+    "id": 2,
+    "name": "bar",
+    "email": "bar@example.com"
+  },
+  {
+    "id": 3,
+    "name": "baz",
+    "email": "baz@example.com"
+  }
+]"
+`;
+
+exports[`Programmatic API persists fixtures when none is found: response 1`] = `
+{
+  "headers": [
+    "access-control-allow-headers: *",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
+    "content-length: 145",
+    "content-type: application/json; charset=utf-8",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "[{"id":1,"name":"foo","email":"foo@example.com"},{"id":2,"name":"bar","email":"bar@example.com"},{"id":3,"name":"baz","email":"baz@example.com"}]",
+}
+`;
+
+exports[`Programmatic API returns all values from the fixtures when found and match: fixture 1`] = `
+"[
+  {
+    "id": 11,
+    "name": "A",
+    "email": "foo@example.com"
+  },
+  {
+    "id": 12,
+    "name": "B",
+    "email": "bar@example.com"
+  },
+  {
+    "id": 13,
+    "name": "C",
+    "email": "baz@example.com"
+  }
+]"
+`;
+
+exports[`Programmatic API returns all values from the fixtures when found and match: response 1`] = `
+{
+  "headers": [
+    "access-control-allow-headers: *",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
+    "content-length: 142",
+    "content-type: application/json; charset=utf-8",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "[{"id":11,"name":"A","email":"foo@example.com"},{"id":12,"name":"B","email":"bar@example.com"},{"id":13,"name":"C","email":"baz@example.com"}]",
+}
+`;
+
+exports[`Programmatic API returns all values from the fixtures when found, but updates when generated structure changes: fixture 1`] = `
+"[
+  {
+    "id": 21,
+    "name": "foo",
+    "email": "foo@example.com"
+  },
+  {
+    "id": 22,
+    "name": "bar",
+    "email": "bar@example.com"
+  },
+  {
+    "id": 23,
+    "name": "baz",
+    "email": "baz@example.com"
+  }
+]"
+`;
+
+exports[`Programmatic API returns all values from the fixtures when found, but updates when generated structure changes: response 1`] = `
+{
+  "headers": [
+    "access-control-allow-headers: *",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
+    "content-length: 148",
+    "content-type: application/json; charset=utf-8",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "[{"id":21,"name":"foo","email":"foo@example.com"},{"id":22,"name":"bar","email":"bar@example.com"},{"id":23,"name":"baz","email":"baz@example.com"}]",
+}
+`;
+
+exports[`Programmatic API returns all values from the fixtures when found: fixture 1`] = `
+"[
+  {
+    "id": 11,
+    "name": "A",
+    "email": "foo@example.com"
+  },
+  {
+    "id": 12,
+    "name": "B",
+    "email": "bar@example.com"
+  },
+  {
+    "id": 13,
+    "name": "C",
+    "email": "baz@example.com"
+  }
+]"
+`;
+
+exports[`Programmatic API returns all values from the fixtures when found: response 1`] = `
+{
+  "headers": [
+    "access-control-allow-headers: *",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
+    "content-length: 142",
+    "content-type: application/json; charset=utf-8",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "[{"id":11,"name":"A","email":"foo@example.com"},{"id":12,"name":"B","email":"bar@example.com"},{"id":13,"name":"C","email":"baz@example.com"}]",
+}
+`;
+
 exports[`Programmatic API sends CORS headers by default: response 1`] = `
 {
   "headers": [

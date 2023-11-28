@@ -18,6 +18,7 @@ import path from 'node:path';
 import { DelayConfiguration, RawCollection, RouteConfig, SmockServerOptions } from './types.js';
 import InMemoryCollectionMapper from './InMemoryCollectionMapper.js';
 import InMemoryStatsStorage from './InMemoryStatsStorage.js';
+import { FixtureGenerator } from './fixtureGenerator.js';
 
 const DEFAULT_COLLECTION = 'base';
 const DEFAULT_DELAY = 0;
@@ -153,6 +154,10 @@ class SmocksServer {
 
   private getRouteFolderPath(): string {
     return path.resolve(this.opts.projectRoot, 'routes');
+  }
+
+  private getFixtureFolderPath(): string {
+    return path.resolve(this.opts.projectRoot, '__fixtures__');
   }
 
   private printServerMessage(name: string | null, reqId: string | null, message: string) {
@@ -400,7 +405,14 @@ class SmocksServer {
               await this.sleep(variant.options.delay || this.opts.defaultDelay);
               res.statusCode = variant.options.status;
               res.setHeader('Content-Type', 'application/json;charset=UTF-8');
-              res.send(JSON.stringify(variant.options.body));
+              if (variant.options.body instanceof FixtureGenerator) {
+                const dirname = this.getFixtureFolderPath();
+                await variant.options.body.load({ dirname, type: 'json', sessionId: (req as any).mockSessionId });
+                await variant.options.body.save({ dirname, type: 'json', sessionId: (req as any).mockSessionId });
+                res.send(JSON.stringify(variant.options.body.get()));
+              } else {
+                res.send(JSON.stringify(variant.options.body));
+              }
               return;
             });
           });
