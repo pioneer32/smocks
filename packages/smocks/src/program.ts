@@ -1,7 +1,5 @@
-#!/usr/bin/env node
-
 import { Command } from 'commander';
-import SmocksServer from './SmocksServer';
+import SmocksServer from './SmocksServer.js';
 import path from 'node:path';
 import fsSync, { constants as fsConstants, promises as fs } from 'node:fs';
 import * as process from 'node:process';
@@ -32,13 +30,11 @@ program
           switch (path.extname(configFile).toLowerCase()) {
             case '.js':
             case '.cjs':
+            case '.mjs':
             case '.json': {
-              // @ts-ignore
-              config = __non_webpack_require__(configFile);
+              config = await import(configFile);
               break;
             }
-            case '.mjs':
-              throw new Error('ESM config file is not supported yet. Sorry about that.');
             default:
               throw new Error('Unsupported config file format');
           }

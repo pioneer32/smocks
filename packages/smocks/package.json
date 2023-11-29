@@ -7,7 +7,7 @@
     "clean": "rm -rf ./dist/*",
     "prepack": "npm run clean; npm run prepack:cjs && npm run prepack:esm && npm run prepack:types && npm run prepack:cli",
     "prepack:cjs": "tsc -p ./tsconfig.cjs.json",
-    "prepack:cli": "npm exec -- webpack -c ./webpack.config.cli.cjs",
+    "prepack:cli": "./scripts/compose-cli-cjs.cjs",
     "prepack:esm": "tsc -p ./tsconfig.esm.json",
     "prepack:types": "tsc -p ./tsconfig.types.json",
     "test": "FORCE_COLOR=1 npm exec -- jest --runInBand --passWithNoTests",
