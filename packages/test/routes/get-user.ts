@@ -10,7 +10,20 @@ const routes: RouteConfig[] = [
         id: 'success',
         type: 'json',
         options: {
+          predicate: () => false,
           status: 200,
+          body: {
+            id: 1,
+            email: 'wrong-foo@bar.baz',
+          },
+        },
+      },
+      {
+        id: 'success',
+        type: 'json',
+        options: {
+          status: 200,
+          predicate: () => true,
           body: {
             id: 1,
             email: 'foo@bar.baz',

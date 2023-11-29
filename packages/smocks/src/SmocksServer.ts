@@ -14,6 +14,7 @@ import { dirExistsSync, fileExistsSync } from './utils.js';
 import http from 'node:http';
 import https from 'node:https';
 import path from 'node:path';
+import _ from 'lodash';
 
 import { DelayConfiguration, RawCollection, RouteConfig, SmockServerOptions } from './types.js';
 import InMemoryCollectionMapper from './InMemoryCollectionMapper.js';
@@ -387,7 +388,9 @@ class SmocksServer {
                 res.setHeader('Access-Control-Allow-Origin', '*');
                 res.setHeader('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
               }
-              const variant = route.variants.find(({ id }) => id === variantName);
+              const variant = _.sample(
+                route.variants.filter(({ id }) => id === variantName).filter(({ options: { predicate } }) => (predicate ? predicate(req) : true))
+              );
               if (!variant) {
                 res.statusCode = 404;
                 await this.sleep(this.opts.defaultDelay);

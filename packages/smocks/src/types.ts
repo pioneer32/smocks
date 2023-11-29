@@ -1,8 +1,11 @@
-import { Request, RequestHandler } from 'express-serve-static-core';
+import { ParamsDictionary, Request, RequestHandler } from 'express-serve-static-core';
+import { ParsedQs } from 'qs';
 
 import { ICollectionMapper, IMemoryStatsStorage } from './SmocksServer.js';
 
 export type DelayConfiguration = number | [number, number] | [undefined, number] | [number, undefined];
+
+type Predicate = (req: Request<ParamsDictionary, any, any, ParsedQs, Record<string, any>>) => boolean;
 
 export type RouteConfig = {
   id: string;
@@ -15,6 +18,7 @@ export type RouteConfig = {
         type: 'middleware';
         options: {
           delay?: DelayConfiguration;
+          predicate?: Predicate;
           middleware: RequestHandler;
         };
       }
@@ -23,6 +27,7 @@ export type RouteConfig = {
         type: 'json';
         options: {
           delay?: DelayConfiguration;
+          predicate?: Predicate;
           status: number;
           body: any;
         };
