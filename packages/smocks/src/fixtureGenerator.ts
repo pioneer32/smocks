@@ -92,6 +92,10 @@ export class FixtureGenerator<T> implements IFixtureGenerator<T> {
     this.opts = { ...opts };
   }
 
+  get name(): string {
+    return this.opts.name;
+  }
+
   get() {
     if (!this.loaded) {
       throw new Error('FixtureGenerator: no fixture has been loaded. Please call load() first');

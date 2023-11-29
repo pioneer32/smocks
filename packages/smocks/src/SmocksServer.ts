@@ -29,6 +29,8 @@ const toConvenientRoutes = ({ id, from, routes }: RawCollection): Omit<RawCollec
   routes: Object.fromEntries(routes.map((route) => route.split(':'))),
 });
 
+const isFixtureGenerator = (val: any): val is FixtureGenerator<any> => val.__nonce__ === FixtureGenerator.__nonce__; // for details about __nonce__, please see comments in FixtureGenerator
+
 export interface ICollectionMapper {
   getCollectionName: (forSessionId: string) => Promise<string | undefined>;
   setCollectionName: (forSessionId: string, collectionName: string) => Promise<void>;
@@ -401,16 +403,17 @@ class SmocksServer {
                 await variant.options.middleware(req, res, () => {});
                 return;
               }
-              (req as any).mockType = 'static';
               await this.sleep(variant.options.delay || this.opts.defaultDelay);
               res.statusCode = variant.options.status;
               res.setHeader('Content-Type', 'application/json;charset=UTF-8');
-              if (variant.options.body.__nonce__ === FixtureGenerator.__nonce__) {
+              if (isFixtureGenerator(variant.options.body)) {
+                (req as any).mockType = `fixture/${variant.options.body.name}`;
                 const dirname = this.getFixtureFolderPath();
                 await variant.options.body.load({ dirname, type: 'json', sessionId: (req as any).mockSessionId });
                 await variant.options.body.save({ dirname, type: 'json', sessionId: (req as any).mockSessionId });
                 res.send(JSON.stringify(variant.options.body.get()));
               } else {
+                (req as any).mockType = 'static';
                 res.send(JSON.stringify(variant.options.body));
               }
               return;
