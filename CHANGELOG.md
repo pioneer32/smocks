@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.30](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.29...v1.0.0-alpha.30) (2023-11-29)
+
+### Features
+
+- First release of featureGenerator ([92cadf0](https://github.com/pioneer32/smocks/commit/92cadf00210400ba126e118a0c8655c0475b039f))
+
 # [1.0.0-alpha.29](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.28...v1.0.0-alpha.29) (2023-08-25)
 
 ### Bug Fixes
