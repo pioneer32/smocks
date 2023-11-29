@@ -405,7 +405,7 @@ class SmocksServer {
               await this.sleep(variant.options.delay || this.opts.defaultDelay);
               res.statusCode = variant.options.status;
               res.setHeader('Content-Type', 'application/json;charset=UTF-8');
-              if (variant.options.body instanceof FixtureGenerator) {
+              if (variant.options.body.__nonce__ === FixtureGenerator.__nonce__) {
                 const dirname = this.getFixtureFolderPath();
                 await variant.options.body.load({ dirname, type: 'json', sessionId: (req as any).mockSessionId });
                 await variant.options.body.save({ dirname, type: 'json', sessionId: (req as any).mockSessionId });

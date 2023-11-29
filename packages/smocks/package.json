@@ -32,7 +32,7 @@
       "types": "./dist/types/index.d.ts",
       "default": "./src/index.ts",
       "import": "./dist/esm/index.js",
-      "require": "./dist/cjs/index.cjs"
+      "require": "./dist/cjs/index.js"
     },
     "./package.json": "./package.json"
   },

@@ -81,6 +81,10 @@ const getDefaultFixturePersister = <T extends any>(): Pick<IFixtureGeneratorOpti
 });
 
 export class FixtureGenerator<T> implements IFixtureGenerator<T> {
+  // Due to the way we bundle cli.js, we can't use "instanceof FixtureGenerator". This might be fixed with changing how it's all bundled
+  public static readonly __nonce__ = '7d0fefa94e3bc5438e';
+  public readonly __nonce__ = FixtureGenerator.__nonce__;
+
   private fixture: T | undefined = undefined;
   private loaded: boolean = false;
   private opts: IFixtureGeneratorOptions<T>;
