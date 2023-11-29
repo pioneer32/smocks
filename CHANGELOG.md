@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.35](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.34...v1.0.0-alpha.35) (2023-11-29)
+
+### Bug Fixes
+
+- For fixtureGenerators, "fixture/{name}" should be logged ([41f0684](https://github.com/pioneer32/smocks/commit/41f068406addf54cf9e94e20c6f173f25a854c39))
+
+### Features
+
+- Support multiple instances of the mock response variant. If calling predicates results in multiple instances, a random one is selected. No predicate is considered () => true; ([d593bf3](https://github.com/pioneer32/smocks/commit/d593bf3132f7e367450458d3a74f7264fab9b80d))
+
 # [1.0.0-alpha.34](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.33...v1.0.0-alpha.34) (2023-11-29)
 
 ### Bug Fixes
