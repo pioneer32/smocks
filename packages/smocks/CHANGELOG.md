@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.31](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.30...v1.0.0-alpha.31) (2023-11-29)
+
+### Bug Fixes
+
+- Fix issue when fixtureGenerator wasn't recognised by the cli util ([5db87c5](https://github.com/pioneer32/smocks/commit/5db87c5397d3024d43997f1bcba4965ff1c0c3b9))
+
 # [1.0.0-alpha.30](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.29...v1.0.0-alpha.30) (2023-11-29)
 
 ### Features
