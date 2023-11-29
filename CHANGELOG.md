@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.32](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.31...v1.0.0-alpha.32) (2023-11-29)
+
+### Bug Fixes
+
+- Remove webpack for cli ([dadec84](https://github.com/pioneer32/smocks/commit/dadec8481094c4e07428967d1f67e4a472424b54))
+
 # [1.0.0-alpha.31](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.30...v1.0.0-alpha.31) (2023-11-29)
 
 ### Bug Fixes
