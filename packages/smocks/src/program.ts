@@ -3,11 +3,22 @@ import SmocksServer from './SmocksServer.js';
 import path from 'node:path';
 import fsSync, { constants as fsConstants, promises as fs } from 'node:fs';
 import * as process from 'node:process';
+import { createRequire } from 'node:module';
 
 const program = new Command();
 
 const isPromiseLike = (val: any): val is PromiseLike<any> => val.then && typeof val.then === 'function';
 const isFunction = (val: any): val is Function => val && typeof val === 'function';
+
+const requireAsCommonJs = (() => {
+  if (typeof require === 'undefined') {
+    // @ts-ignore
+    return createRequire(import.meta.url);
+  }
+  return require;
+})();
+
+const unwrapDefault = (commonJs: any) => ('default' in commonJs ? commonJs.default : commonJs);
 
 program
   .name('smocks')
@@ -28,16 +39,20 @@ program
           fsSync.accessSync(configFile, fsConstants.R_OK);
           let config;
           switch (path.extname(configFile).toLowerCase()) {
-            case '.js':
             case '.cjs':
-            case '.mjs':
             case '.json': {
+              config = requireAsCommonJs(configFile);
+              break;
+            }
+            case '.js':
+            case '.mjs': {
               config = await import(configFile);
               break;
             }
             default:
               throw new Error('Unsupported config file format');
           }
+          config = unwrapDefault(config);
           if (isPromiseLike(config)) {
             return await config;
           }
