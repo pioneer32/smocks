@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.36](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.35...v1.0.0-alpha.36) (2023-11-30)
+
+### Bug Fixes
+
+- Improve importing config as commonjs ([d254529](https://github.com/pioneer32/smocks/commit/d254529c097f8b63e20767f7a25afae68efafbb7))
+
 # [1.0.0-alpha.35](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.34...v1.0.0-alpha.35) (2023-11-29)
 
 ### Bug Fixes
