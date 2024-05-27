@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.37](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.36...v1.0.0-alpha.37) (2024-05-27)
+
+### Bug Fixes
+
+- Prevent it from crashing when either empty route file is found or TSC produced empty file. Address issue with wrongly pointed **dirname and **filename ([3e835ad](https://github.com/pioneer32/smocks/commit/3e835ad82ceaa368133512629d7a2f6d116bb9e6))
+
+### Features
+
+- Add accessing POST json body in the predicate and middleware ([f65b0be](https://github.com/pioneer32/smocks/commit/f65b0be554d0261386eb216ffe9799f35f014cd9))
+- Add file type ([e1c6440](https://github.com/pioneer32/smocks/commit/e1c6440f27c0143a559a875cdc8395cb09512892))
+
 # [1.0.0-alpha.36](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.35...v1.0.0-alpha.36) (2023-11-30)
 
 ### Bug Fixes
