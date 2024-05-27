@@ -42,6 +42,65 @@ exports[`Programmatic API handles OPTIONS request by default: session-details 2`
 }
 `;
 
+exports[`Programmatic API handles POST requests and predicates and middleware have access to the body: response 1`] = `
+{
+  "headers": [
+    "access-control-allow-headers: *",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
+    "content-length: 37",
+    "content-type: application/json; charset=utf-8",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "{"id":123,"email":"example@test.123"}",
+}
+`;
+
+exports[`Programmatic API handles POST requests and predicates and middleware have access to the body: response 2`] = `
+{
+  "headers": [
+    "access-control-allow-headers: *",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
+    "content-length: 0",
+    "x-powered-by: Express",
+  ],
+  "status": 404,
+  "text": "",
+}
+`;
+
+exports[`Programmatic API handles POST requests and predicates and middleware have access to the body: session-details 1`] = `
+{
+  "headers": [
+    "connection: close",
+    "content-length: 39",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"27-8/Q+IbW7jZ2tzRZSTJBF8yo08vI"",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "{"collectionName":"base","requests":[]}",
+}
+`;
+
+exports[`Programmatic API handles POST requests and predicates and middleware have access to the body: session-details 2`] = `
+{
+  "headers": [
+    "connection: close",
+    "content-length: 334",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"14e-WGlK4HW8ROm5QsTvhpspMJmvt10"",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "{"collectionName":"base","requests":[{"timestamp":1676886788388,"collection":"base","route":"POST_USER:success","request":{"method":"POST","url":"/user"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"base","route":"POST_USER:success","request":{"method":"POST","url":"/user"},"response":{"statusCode":404}}]}",
+}
+`;
+
 exports[`Programmatic API listens: getAdminServerURLs 1`] = `
 [
   "http://localhost:3001/",

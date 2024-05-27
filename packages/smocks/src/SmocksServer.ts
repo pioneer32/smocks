@@ -301,6 +301,7 @@ class SmocksServer {
     const app = express();
     app.disable('etag');
     app.use(BodyParser.urlencoded({ extended: true }));
+    app.use(BodyParser.json());
     app.use((req, res, next) => {
       res.on('finish', () => {
         // @ts-ignore

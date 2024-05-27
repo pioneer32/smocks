@@ -133,6 +133,33 @@ describe('Programmatic API', () => {
     await clearSessionRequests('default');
   });
 
+  it('handles POST requests and predicates and middleware have access to the body', async () => {
+    expect(await getSessionDetails('default')).toMatchSnapshot('session-details');
+
+    // this goes to a predicate
+    expect(
+      await request('http://localhost:3000/user', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ test: '123' }),
+      })
+    ).toMatchSnapshot('response');
+
+    // this goes to middleware
+    expect(
+      await request('http://localhost:3000/user', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ test: '234' }),
+      })
+    ).toMatchSnapshot('response');
+
+    expect(await getSessionDetails('default')).toMatchSnapshot('session-details');
+
+    // let's clean session requests:
+    await clearSessionRequests('default');
+  });
+
   it('sends CORS headers by default', async () => {
     expect(await getSessionDetails('default')).toMatchSnapshot('session-details');
 
