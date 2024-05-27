@@ -45,7 +45,7 @@ exports[`Programmatic API handles OPTIONS request by default: session-details 2`
 exports[`Programmatic API listens: getAdminServerURLs 1`] = `
 [
   "https://localhost:3001/",
-  "https://192.168.1.6:3001/",
+  "https://192.168.1.4:3001/",
   "https://fe80::1:3001/",
 ]
 `;
@@ -53,7 +53,7 @@ exports[`Programmatic API listens: getAdminServerURLs 1`] = `
 exports[`Programmatic API listens: getMockServerURLs 1`] = `
 [
   "https://localhost:3000/",
-  "https://192.168.1.6:3000/",
+  "https://192.168.1.4:3000/",
   "https://fe80::1:3000/",
 ]
 `;

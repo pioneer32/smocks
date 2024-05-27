@@ -45,7 +45,7 @@ exports[`Programmatic API handles OPTIONS request by default: session-details 2`
 exports[`Programmatic API listens: getAdminServerURLs 1`] = `
 [
   "http://localhost:3001/",
-  "http://192.168.1.6:3001/",
+  "http://192.168.1.4:3001/",
   "http://fe80::1:3001/",
 ]
 `;
@@ -53,7 +53,7 @@ exports[`Programmatic API listens: getAdminServerURLs 1`] = `
 exports[`Programmatic API listens: getMockServerURLs 1`] = `
 [
   "http://localhost:3000/",
-  "http://192.168.1.6:3000/",
+  "http://192.168.1.4:3000/",
   "http://fe80::1:3000/",
 ]
 `;
@@ -163,42 +163,6 @@ exports[`Programmatic API returns all values from the fixtures when found, but u
   ],
   "status": 200,
   "text": "[{"id":21,"name":"foo","email":"foo@example.com"},{"id":22,"name":"bar","email":"bar@example.com"},{"id":23,"name":"baz","email":"baz@example.com"}]",
-}
-`;
-
-exports[`Programmatic API returns all values from the fixtures when found: fixture 1`] = `
-"[
-  {
-    "id": 11,
-    "name": "A",
-    "email": "foo@example.com"
-  },
-  {
-    "id": 12,
-    "name": "B",
-    "email": "bar@example.com"
-  },
-  {
-    "id": 13,
-    "name": "C",
-    "email": "baz@example.com"
-  }
-]"
-`;
-
-exports[`Programmatic API returns all values from the fixtures when found: response 1`] = `
-{
-  "headers": [
-    "access-control-allow-headers: *",
-    "access-control-allow-methods: OPTIONS,POST,GET",
-    "access-control-allow-origin: *",
-    "connection: close",
-    "content-length: 142",
-    "content-type: application/json; charset=utf-8",
-    "x-powered-by: Express",
-  ],
-  "status": 200,
-  "text": "[{"id":11,"name":"A","email":"foo@example.com"},{"id":12,"name":"B","email":"bar@example.com"},{"id":13,"name":"C","email":"baz@example.com"}]",
 }
 `;
 

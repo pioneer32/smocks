@@ -8,16 +8,22 @@ const USE_ESM = typeof require === 'undefined';
 const transpile = async (tsFilePath: string, outputJsFilePath: string) => {
   const tsCode = (await fs.readFile(tsFilePath)).toString();
   await fs.mkdir(path.dirname(outputJsFilePath), { recursive: true });
-  await fs.writeFile(
-    outputJsFilePath,
-    tsc.transpileModule(tsCode.toString(), {
-      compilerOptions: {
-        module: USE_ESM ? tsc.ModuleKind.ESNext : tsc.ModuleKind.CommonJS,
-        moduleResolution: tsc.ModuleResolutionKind.Node16,
-        target: tsc.ScriptTarget.ES2020,
-      },
-    }).outputText
-  );
+  // The route files often contain __dirname and __filename. Given we they are imported from the cache, those constants point to the cache path, which is not what the route developers expect
+  // Let's "fix" it
+  const fixedTsCode = `const __ORIG__filename = "${tsFilePath}"; const __ORIG__dirname = "${path.dirname(tsFilePath)}";\n${tsCode
+    .replace(/__filename/g, '__ORIG__filename')
+    .replace(/__dirname/g, '__ORIG__dirname')}`;
+  const jsOutput = tsc.transpileModule(fixedTsCode, {
+    compilerOptions: {
+      module: USE_ESM ? tsc.ModuleKind.ESNext : tsc.ModuleKind.CommonJS,
+      moduleResolution: tsc.ModuleResolutionKind.Node16,
+      target: tsc.ScriptTarget.ES2020,
+    },
+  }).outputText;
+  if (!jsOutput) {
+    throw new Error(`Failed to transpile "${tsFilePath}": tsc.transpileModule returned empty string `);
+  }
+  await fs.writeFile(outputJsFilePath, jsOutput);
 };
 
 export type Options = {

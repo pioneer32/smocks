@@ -203,14 +203,17 @@ class SmocksServer {
     const files = await fs.readdir(dir);
     return (
       await Promise.all(
-        files.map((filename) =>
-          load(dir + '/' + filename, {
-            cacheDir: path.join(this.opts.projectRoot, `.cache`),
-          })
-        )
+        files
+          .filter((filename) => filename.match(/.[cm]?[jt]sx?$/i))
+          .map((filename) =>
+            load(dir + '/' + filename, {
+              cacheDir: path.join(this.opts.projectRoot, `.cache`),
+            })
+          )
       )
     )
       .map((m) => m.default)
+      .filter(Boolean) // to prevent it from crashing, should there be an empty ts/js file
       .flat();
   }
 
