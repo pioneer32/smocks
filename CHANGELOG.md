@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.38](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.37...v1.0.0-alpha.38) (2024-05-27)
+
+### Bug Fixes
+
+- Roll back accidental changes ([61b56fa](https://github.com/pioneer32/smocks/commit/61b56fad67ecc447ba8b23c2c026b91fff198a61))
+
 # [1.0.0-alpha.37](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.36...v1.0.0-alpha.37) (2024-05-27)
 
 ### Bug Fixes
