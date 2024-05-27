@@ -409,6 +409,20 @@ class SmocksServer {
                 await variant.options.middleware(req, res, () => {});
                 return;
               }
+              if (variant.type === 'file') {
+                (req as any).mockType = 'middleware';
+                await this.sleep(variant.options.delay || this.opts.defaultDelay);
+                res.statusCode = variant.options.status;
+                res.setHeader('Content-Type', variant.options.contentType);
+                if (variant.options.body) {
+                  res.send(typeof variant.options.body === 'string' ? Buffer.from(variant.options.body) : variant.options.body);
+                } else {
+                  const body = (await fs.readFile(variant.options.file!)).toString();
+                  res.send(body);
+                }
+                return;
+              }
+              // type === json
               await this.sleep(variant.options.delay || this.opts.defaultDelay);
               res.statusCode = variant.options.status;
               res.setHeader('Content-Type', 'application/json;charset=UTF-8');

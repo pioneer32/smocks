@@ -5,6 +5,8 @@ import fs from 'node:fs';
 
 let server: SmocksServer;
 
+jest.setTimeout(15_000);
+
 describe('Programmatic API', () => {
   beforeAll(async () => {
     MockDate.set(1676886788388);
@@ -103,6 +105,32 @@ describe('Programmatic API', () => {
     expect(await request('http://localhost:3000/user')).toMatchSnapshot('response');
 
     expect(await getSessionDetails('default')).toMatchSnapshot('session-details');
+
+    // let's clean session requests:
+    await clearSessionRequests('default');
+  });
+
+  it('sends files', async () => {
+    expect(await getSessionDetails('default')).toMatchSnapshot('session-details');
+
+    // download file provided as a file => HTTP 200
+    expect(
+      await request('http://localhost:3000/user/download', {
+        method: 'GET',
+      })
+    ).toMatchSnapshot('response');
+
+    // download file provided as a string=> HTTP 200
+    expect(
+      await request('http://localhost:3000/users/download', {
+        method: 'GET',
+      })
+    ).toMatchSnapshot('response');
+
+    expect(await getSessionDetails('default')).toMatchSnapshot('session-details');
+
+    // let's clean session requests:
+    await clearSessionRequests('default');
   });
 
   it('sends CORS headers by default', async () => {

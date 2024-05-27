@@ -32,6 +32,25 @@ export type RouteConfig = {
           body: any;
         };
       }
+    | {
+        id: string;
+        type: 'file';
+        options: {
+          delay?: DelayConfiguration;
+          predicate?: Predicate;
+          status: number;
+          contentType: string;
+        } & (
+          | {
+              file: string;
+              body?: never;
+            }
+          | {
+              file?: never;
+              body: Blob | string
+            }
+        );
+      }
   )[];
 };
 

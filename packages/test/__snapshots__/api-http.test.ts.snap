@@ -202,13 +202,80 @@ exports[`Programmatic API sends CORS headers by default: session-details 1`] = `
 {
   "headers": [
     "connection: close",
-    "content-length: 184",
+    "content-length: 39",
     "content-type: application/json; charset=utf-8",
-    "etag: W/"b8-zeFvSyCx21bNoh0SiV1VNPsExNs"",
+    "etag: W/"27-8/Q+IbW7jZ2tzRZSTJBF8yo08vI"",
     "x-powered-by: Express",
   ],
   "status": 200,
-  "text": "{"collectionName":"base","requests":[{"timestamp":1676886788388,"collection":"base","route":"GET_USER:success","request":{"method":"GET","url":"/user"},"response":{"statusCode":200}}]}",
+  "text": "{"collectionName":"base","requests":[]}",
+}
+`;
+
+exports[`Programmatic API sends files: response 1`] = `
+{
+  "headers": [
+    "access-control-allow-headers: *",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
+    "content-length: 59",
+    "content-type: text/html; charset=utf-8",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "<!DOCTYPE html>
+<html>
+  <body>
+    Test
+  </body>
+</html>
+",
+}
+`;
+
+exports[`Programmatic API sends files: response 2`] = `
+{
+  "headers": [
+    "access-control-allow-headers: *",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
+    "content-length: 29",
+    "content-type: text/csv",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "1,2,3,4,5,6
+11,12,13,14,15,16",
+}
+`;
+
+exports[`Programmatic API sends files: session-details 1`] = `
+{
+  "headers": [
+    "connection: close",
+    "content-length: 39",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"27-8/Q+IbW7jZ2tzRZSTJBF8yo08vI"",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "{"collectionName":"base","requests":[]}",
+}
+`;
+
+exports[`Programmatic API sends files: session-details 2`] = `
+{
+  "headers": [
+    "connection: close",
+    "content-length: 360",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"168-M2FfdKx/Tig17Jv1Ha5VcCRvBx4"",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "{"collectionName":"base","requests":[{"timestamp":1676886788388,"collection":"base","route":"DOWNLOAD_USER:success","request":{"method":"GET","url":"/user/download"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"base","route":"DOWNLOAD_USERS:success","request":{"method":"GET","url":"/users/download"},"response":{"statusCode":200}}]}",
 }
 `;
 
