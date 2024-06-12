@@ -10,13 +10,13 @@ import os from 'node:os';
 import Console from 'node:console';
 import { AddressInfo } from 'net';
 import { load } from './loader.js';
-import { dirExistsSync, fileExistsSync } from './utils.js';
+import { dirExistsSync, fileExistsSync, sleep } from './utils.js';
 import http from 'node:http';
 import https from 'node:https';
 import path from 'node:path';
 import _ from 'lodash';
 
-import { DelayConfiguration, RawCollection, RouteConfig, SmockServerOptions } from './types.js';
+import { RawCollection, RouteConfig, SmockServerOptions } from './types.js';
 import InMemoryCollectionMapper from './InMemoryCollectionMapper.js';
 import InMemoryStatsStorage from './InMemoryStatsStorage.js';
 import { FixtureGenerator } from './fixtureGenerator.js';
@@ -102,6 +102,7 @@ class SmocksServer {
     this.print('info', `Smocks ADMIN is running at:`);
     this.printServerUrlsFor(this.adminServer!);
   }
+
   async stop() {
     if (!this.mockServer) {
       throw new Error('Nothing to stop - Smocks is not running');
@@ -355,7 +356,7 @@ class SmocksServer {
           res.setHeader('Access-Control-Allow-Headers', '*');
           res.setHeader('Access-Control-Allow-Origin', '*');
           res.setHeader('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
-          this.sleep(this.opts.defaultDelay).then(() => {
+          sleep(this.opts.defaultDelay).then(() => {
             res.send();
           });
           return;
@@ -397,7 +398,7 @@ class SmocksServer {
               );
               if (!variant) {
                 res.statusCode = 404;
-                await this.sleep(this.opts.defaultDelay);
+                await sleep(this.opts.defaultDelay);
                 res.send();
                 return;
               }
@@ -406,13 +407,13 @@ class SmocksServer {
               }
               if (variant.type === 'middleware') {
                 (req as any).mockType = 'middleware';
-                await this.sleep(variant.options.delay || this.opts.defaultDelay);
+                await sleep(variant.options.delay || this.opts.defaultDelay);
                 await variant.options.middleware(req, res, () => {});
                 return;
               }
               if (variant.type === 'file') {
                 (req as any).mockType = 'middleware';
-                await this.sleep(variant.options.delay || this.opts.defaultDelay);
+                await sleep(variant.options.delay || this.opts.defaultDelay);
                 res.statusCode = variant.options.status;
                 res.setHeader('Content-Type', variant.options.contentType);
                 if (variant.options.body) {
@@ -424,7 +425,7 @@ class SmocksServer {
                 return;
               }
               // type === json
-              await this.sleep(variant.options.delay || this.opts.defaultDelay);
+              await sleep(variant.options.delay || this.opts.defaultDelay);
               res.statusCode = variant.options.status;
               res.setHeader('Content-Type', 'application/json;charset=UTF-8');
               if (isFixtureGenerator(variant.options.body)) {
@@ -489,20 +490,6 @@ class SmocksServer {
       });
     });
     return app;
-  }
-  private async sleep(delayConfig: DelayConfiguration) {
-    let ms: number;
-    if (!delayConfig) {
-      return;
-    } else if (Array.isArray(delayConfig)) {
-      const min = delayConfig[0] || 0;
-      const max = delayConfig[1] || 15_000;
-      const delta = Math.abs(max - min);
-      ms = Math.random() * delta + Math.min(min, max);
-    } else {
-      ms = delayConfig;
-    }
-    return new Promise((res) => setTimeout(res, ms));
   }
 }
 

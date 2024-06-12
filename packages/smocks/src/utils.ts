@@ -1,5 +1,6 @@
 import fsSync, { constants, promises as fs } from 'node:fs';
 import crypto from 'node:crypto';
+import { DelayConfiguration } from './types.js';
 
 export const fileExists = async (filePath: string): Promise<boolean> => {
   try {
@@ -58,4 +59,19 @@ export const fileContentHash = (filePath: string): Promise<string> => {
     stream.on('error', rej);
     stream.pipe(hash);
   });
+};
+
+export const sleep = async (delayConfig: DelayConfiguration) => {
+  let ms: number;
+  if (!delayConfig) {
+    return;
+  } else if (Array.isArray(delayConfig)) {
+    const min = delayConfig[0] || 0;
+    const max = delayConfig[1] || 15_000;
+    const delta = Math.abs(max - min);
+    ms = Math.random() * delta + Math.min(min, max);
+  } else {
+    ms = delayConfig;
+  }
+  return new Promise((res) => setTimeout(res, ms));
 };
