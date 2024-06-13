@@ -65,6 +65,22 @@ exports[`Programmatic API handles POST requests and predicates and middleware ha
     "access-control-allow-methods: OPTIONS,POST,GET",
     "access-control-allow-origin: *",
     "connection: close",
+    "content-length: 17",
+    "content-type: text/html; charset=utf-8",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "Received test=234",
+}
+`;
+
+exports[`Programmatic API handles POST requests and predicates and middleware have access to the body: response 3`] = `
+{
+  "headers": [
+    "access-control-allow-headers: *",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
     "content-length: 0",
     "x-powered-by: Express",
   ],
@@ -91,13 +107,13 @@ exports[`Programmatic API handles POST requests and predicates and middleware ha
 {
   "headers": [
     "connection: close",
-    "content-length: 334",
+    "content-length: 482",
     "content-type: application/json; charset=utf-8",
-    "etag: W/"14e-WGlK4HW8ROm5QsTvhpspMJmvt10"",
+    "etag: W/"1e2-OpbOQAkjvtJqpRvwJUtKgF5fuvI"",
     "x-powered-by: Express",
   ],
   "status": 200,
-  "text": "{"collectionName":"base","requests":[{"timestamp":1676886788388,"collection":"base","route":"POST_USER:success","request":{"method":"POST","url":"/user"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"base","route":"POST_USER:success","request":{"method":"POST","url":"/user"},"response":{"statusCode":404}}]}",
+  "text": "{"collectionName":"base","requests":[{"timestamp":1676886788388,"collection":"base","route":"POST_USER:success","request":{"method":"POST","url":"/user"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"base","route":"POST_USER:success","request":{"method":"POST","url":"/user"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"base","route":"POST_USER:success","request":{"method":"POST","url":"/user"},"response":{"statusCode":404}}]}",
 }
 `;
 

@@ -136,7 +136,7 @@ describe('Programmatic API', () => {
   it('handles POST requests and predicates and middleware have access to the body', async () => {
     expect(await getSessionDetails('default')).toMatchSnapshot('session-details');
 
-    // this goes to a predicate
+    // this goes to a predicate and middleware
     expect(
       await request('http://localhost:3000/user', {
         method: 'POST',
@@ -145,12 +145,21 @@ describe('Programmatic API', () => {
       })
     ).toMatchSnapshot('response');
 
-    // this goes to middleware
+    // this goes to predicate, but the middleware returns a static json
     expect(
       await request('http://localhost:3000/user', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ test: '234' }),
+      })
+    ).toMatchSnapshot('response');
+
+    // this misses both predicates
+    expect(
+      await request('http://localhost:3000/user', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ test: '345' }),
       })
     ).toMatchSnapshot('response');
 
