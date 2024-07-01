@@ -1,6 +1,6 @@
-import { IMemoryStatsStorage } from './SmocksServer.js';
+import { IStatsStorage } from './SmocksServer.js';
 
-class InMemoryStatsStorage implements IMemoryStatsStorage {
+class InMemoryStatsStorage implements IStatsStorage {
   private storage = new Map<string, string>();
 
   async getValue(key: string): Promise<string | undefined> {

@@ -1,0 +1,61 @@
+import * as core from 'express-serve-static-core';
+import express from 'express';
+
+import { ICollectionMapper, IStatsStorage } from './SmocksServer.js';
+
+export const createAdminApp = ({
+  getCollectionMapper,
+  getStatsStorage,
+  log,
+}: {
+  log: (name: string, message: string) => void;
+  getCollectionMapper: () => ICollectionMapper;
+  getStatsStorage: () => IStatsStorage;
+}): core.Express => {
+  const app = express();
+  app.use(express.json());
+  app.use((req, res, next) => {
+    res.on('finish', () => {
+      const adminAction = (req as any).mockAdminAction;
+      log('ADMIN', `"${req.method.toUpperCase()} ${decodeURI(req.url)}" ${res.statusCode} ${res.statusMessage} -> ${adminAction}`);
+    });
+    next();
+  });
+  app.put('/session/:sessionId', (req, res, _next) => {
+    const { collection } = req.body;
+    const { sessionId } = req.params;
+    (req as any).mockAdminAction = `Set sessionId="${sessionId}" to use collection="${collection}"`;
+    getCollectionMapper()
+      .setCollectionName(sessionId, collection)
+      .then(() => {
+        res.statusCode = 200;
+        res.send();
+      });
+  });
+  app.get('/session/:sessionId', (req, res, _next) => {
+    const { sessionId } = req.params;
+    (req as any).mockAdminAction = `Sent details of sessionId="${sessionId}"`;
+
+    Promise.all([getCollectionMapper().getCollectionName(sessionId), getStatsStorage().getCollection(`${sessionId}:requests`)]).then(
+      ([collectionName, requests]) => {
+        res.statusCode = 200;
+        // res.setHeader('Content-Type', 'application/json');
+        res.json({
+          collectionName,
+          requests: requests.map((r) => JSON.parse(r)),
+        });
+      }
+    );
+  });
+  app.delete('/session/:sessionId/requests', (req, res, _next) => {
+    const { sessionId } = req.params;
+    (req as any).mockAdminAction = `Cleaned the request log for sessionId="${sessionId}"`;
+    getStatsStorage()
+      .removeCollection(`${sessionId}:requests`)
+      .then(() => {
+        res.statusCode = 200;
+        res.send();
+      });
+  });
+  return app;
+};

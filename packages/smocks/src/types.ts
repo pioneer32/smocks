@@ -1,7 +1,7 @@
 import { ParamsDictionary, Request, RequestHandler } from 'express-serve-static-core';
 import { ParsedQs } from 'qs';
 
-import { ICollectionMapper, IMemoryStatsStorage } from './SmocksServer.js';
+import { ICollectionMapper, IStatsStorage } from './SmocksServer.js';
 
 export type DelayConfiguration = number | [number, number] | [undefined, number] | [number, undefined];
 
@@ -78,7 +78,7 @@ export type SmockServerOptions = Partial<{
   defaultCollection?: string;
   getMockSessionId: (request: Request) => Promise<string | undefined | void>;
   collectionMapper: ICollectionMapper;
-  statsStorage: IMemoryStatsStorage;
+  statsStorage: IStatsStorage;
   projectRoot: string;
 }>;
 

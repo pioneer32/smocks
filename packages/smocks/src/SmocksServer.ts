@@ -20,6 +20,7 @@ import { RawCollection, RouteConfig, SmockServerOptions } from './types.js';
 import InMemoryCollectionMapper from './InMemoryCollectionMapper.js';
 import InMemoryStatsStorage from './InMemoryStatsStorage.js';
 import { FixtureGenerator } from './fixtureGenerator.js';
+import { createAdminApp } from './adminApp.js';
 
 const DEFAULT_COLLECTION = 'base';
 const DEFAULT_DELAY = 0;
@@ -37,7 +38,7 @@ export interface ICollectionMapper {
   setCollectionName: (forSessionId: string, collectionName: string) => Promise<void>;
 }
 
-export interface IMemoryStatsStorage {
+export interface IStatsStorage {
   setValue(key: string, value: string): Promise<void>;
   getValue(key: string): Promise<string | undefined>;
   removeValue(key: string): Promise<void>;
@@ -79,7 +80,11 @@ class SmocksServer {
     }
 
     this.mockApp = this.createMockApp();
-    this.adminApp = this.createAdminApp();
+    this.adminApp = createAdminApp({
+      getStatsStorage: () => this.opts.statsStorage,
+      getCollectionMapper: () => this.opts.collectionMapper,
+      log: (name, message) => this.printServerMessage(name, null, message),
+    });
   }
 
   async start() {
@@ -443,51 +448,6 @@ class SmocksServer {
           });
       });
       router(req, res, next);
-    });
-    return app;
-  }
-
-  private createAdminApp(): core.Express {
-    const app = express();
-    app.use(express.json());
-    app.use((req, res, next) => {
-      res.on('finish', () => {
-        const adminAction = (req as any).mockAdminAction;
-        this.printServerMessage('ADMIN', null, `"${req.method.toUpperCase()} ${decodeURI(req.url)}" ${res.statusCode} ${res.statusMessage} -> ${adminAction}`);
-      });
-      next();
-    });
-    app.put('/session/:sessionId', (req, res, _next) => {
-      const { collection } = req.body;
-      const { sessionId } = req.params;
-      (req as any).mockAdminAction = `Set sessionId="${sessionId}" to use collection="${collection}"`;
-      this.opts.collectionMapper.setCollectionName(sessionId, collection).then(() => {
-        res.statusCode = 200;
-        res.send();
-      });
-    });
-    app.get('/session/:sessionId', (req, res, _next) => {
-      const { sessionId } = req.params;
-      (req as any).mockAdminAction = `Sent details of sessionId="${sessionId}"`;
-
-      Promise.all([this.opts.collectionMapper.getCollectionName(sessionId), this.opts.statsStorage.getCollection(`${sessionId}:requests`)]).then(
-        ([collectionName, requests]) => {
-          res.statusCode = 200;
-          // res.setHeader('Content-Type', 'application/json');
-          res.json({
-            collectionName,
-            requests: requests.map((r) => JSON.parse(r)),
-          });
-        }
-      );
-    });
-    app.delete('/session/:sessionId/requests', (req, res, _next) => {
-      const { sessionId } = req.params;
-      (req as any).mockAdminAction = `Cleaned the request log for sessionId="${sessionId}"`;
-      this.opts.statsStorage.removeCollection(`${sessionId}:requests`).then(() => {
-        res.statusCode = 200;
-        res.send();
-      });
     });
     return app;
   }
