@@ -1,8 +1,4 @@
 import * as core from 'express-serve-static-core';
-import { Request } from 'express-serve-static-core';
-import express, { Router } from 'express';
-import BodyParser from 'body-parser';
-import { getCurrentInvoke } from '@vendia/serverless-express';
 import { promises as fs } from 'node:fs';
 import DefaultGateway from 'default-gateway';
 import IpAddr from 'ipaddr.js';
@@ -10,17 +6,16 @@ import os from 'node:os';
 import Console from 'node:console';
 import { AddressInfo } from 'net';
 import { load } from './loader.js';
-import { dirExistsSync, fileExistsSync, sleep } from './utils.js';
+import { dirExistsSync, fileExistsSync } from './utils.js';
 import http from 'node:http';
 import https from 'node:https';
 import path from 'node:path';
-import _ from 'lodash';
 
 import { RawCollection, RouteConfig, SmockServerOptions } from './types.js';
 import InMemoryCollectionMapper from './InMemoryCollectionMapper.js';
 import InMemoryStatsStorage from './InMemoryStatsStorage.js';
-import { FixtureGenerator } from './fixtureGenerator.js';
 import { createAdminApp } from './adminApp.js';
+import { createMockApp } from './mockApp.js';
 
 const DEFAULT_COLLECTION = 'base';
 const DEFAULT_DELAY = 0;
@@ -31,10 +26,15 @@ const toConvenientRoutes = ({ id, from, routes }: RawCollection): Omit<RawCollec
   routes: Object.fromEntries(routes.map((route) => route.split(':'))),
 });
 
-const isFixtureGenerator = (val: any): val is FixtureGenerator<any> => val.__nonce__ === FixtureGenerator.__nonce__; // for details about __nonce__, please see comments in FixtureGenerator
-
 export interface ICollectionMapper {
+  /**
+   * @description Returns the current collection name for the given session id
+   */
   getCollectionName: (forSessionId: string) => Promise<string | undefined>;
+
+  /**
+   * @description Sets the current collection name for the given session id
+   */
   setCollectionName: (forSessionId: string, collectionName: string) => Promise<void>;
 }
 
@@ -79,7 +79,15 @@ class SmocksServer {
       throw new Error(`The route's directory is not accessible (${this.getRouteFolderPath()})`);
     }
 
-    this.mockApp = this.createMockApp();
+    this.mockApp = createMockApp({
+      loadCollections: () => this.loadCollections(),
+      getOpts: () => ({ ...this.opts, getMockSessionId: async (req) => (await this.opts.getMockSessionId(req)) || 'default' }),
+      loadRoutes: () => this.loadRoutes(),
+      log: (requestId, message) => this.printServerMessage(null, requestId, message),
+      getCollectionMapper: () => this.opts.collectionMapper,
+      getStatsStorage: () => this.opts.statsStorage,
+      getFixtureFolderPath: () => this.getFixtureFolderPath(),
+    });
     this.adminApp = createAdminApp({
       getStatsStorage: () => this.opts.statsStorage,
       getCollectionMapper: () => this.opts.collectionMapper,
@@ -171,11 +179,6 @@ class SmocksServer {
 
   private printServerMessage(name: string | null, reqId: string | null, message: string) {
     this.print('info', [`[${new Date().toISOString()}]`, reqId ? `[${reqId}]` : null, name ? `[${name}]` : null, message].filter(Boolean).join(' '));
-  }
-
-  private async getCollectionNameForSession(req: Request): Promise<string> {
-    const sessionId = await this.opts.getMockSessionId(req);
-    return (sessionId && (await this.opts.collectionMapper.getCollectionName(sessionId))) || this.opts.defaultCollection;
   }
 
   private async loadCollections(): Promise<Record<string, Record<string, string>>> {
@@ -301,155 +304,6 @@ class SmocksServer {
         Console.log(...args);
         break;
     }
-  }
-
-  private createMockApp(): core.Express {
-    const app = express();
-    app.disable('etag');
-    app.use(BodyParser.urlencoded({ extended: true }));
-    app.use(BodyParser.json());
-    app.use((req, res, next) => {
-      res.on('finish', () => {
-        // @ts-ignore
-        const { event = {}, context = {} } = getCurrentInvoke();
-        const sessionId = (req as any).mockSessionId;
-        const collection = (req as any).mockCollectionName;
-        const route = (req as any).mockRouteName;
-        if (sessionId) {
-          this.opts.statsStorage.appendCollection(
-            `${sessionId}:requests`,
-            JSON.stringify({
-              timestamp: +new Date(),
-              collection,
-              route,
-              request: {
-                method: req.method,
-                url: req.url,
-              },
-              response: {
-                statusCode: res.statusCode,
-              },
-            })
-          );
-        }
-        this.printServerMessage(
-          null,
-          context.awsRequestId,
-          [
-            `"${req.method.toUpperCase()} ${decodeURI(req.url)}" ${res.statusCode} ${res.statusMessage}`,
-            '[' +
-              [
-                sessionId ? `session=${sessionId}` : '',
-                collection ? `collection=${collection}` : '',
-                route ? `route=${route}` : '',
-                `type=${(req as any).mockType}`,
-              ]
-                .filter(Boolean)
-                .join(' ') +
-              ']',
-          ]
-            .filter(Boolean)
-            .join(' ')
-        );
-      });
-      next();
-    });
-    if (this.opts.cors || this.opts.cors === undefined) {
-      app.use((req, res, next) => {
-        if (req.method.toUpperCase() === 'OPTIONS') {
-          res.statusCode = 204;
-          res.setHeader('Access-Control-Allow-Headers', '*');
-          res.setHeader('Access-Control-Allow-Origin', '*');
-          res.setHeader('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
-          sleep(this.opts.defaultDelay).then(() => {
-            res.send();
-          });
-          return;
-        }
-        next();
-      });
-    }
-    app.all('*', async (req, res, next) => {
-      // @ts-ignore
-      const { event = {}, context = {} } = getCurrentInvoke();
-      const router = express.Router() as Router;
-
-      (req as any).mockSessionId = await this.opts.getMockSessionId(req);
-      const collectionName = await this.getCollectionNameForSession(req);
-      (req as any).mockCollectionName = collectionName;
-      const collections = await this.loadCollections();
-      const routes = await this.loadRoutes();
-
-      if (!collections[collectionName]) {
-        throw new Error(`No collection found for "${collectionName}"`);
-      }
-
-      Object.entries(collections[collectionName]).forEach(([name, variantName]) => {
-        routes
-          .filter(({ id, variants }) => id === name && variants.find(({ id }) => id === variantName))
-          .forEach((route) => {
-            router[route.method.toLowerCase() as 'get' | 'post' | 'put'](route.url, async (req, res) => {
-              (req as any).mockRouteName = `${name}:${variantName}`;
-              // @ts-ignore
-              const { event = {}, context = {} } = getCurrentInvoke();
-
-              if (this.opts.cors || this.opts.cors === undefined) {
-                res.setHeader('Access-Control-Allow-Headers', '*');
-                res.setHeader('Access-Control-Allow-Origin', '*');
-                res.setHeader('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
-              }
-              const variant = _.sample(
-                route.variants.filter(({ id }) => id === variantName).filter(({ options: { predicate } }) => (predicate ? predicate(req) : true))
-              );
-              if (!variant) {
-                res.statusCode = 404;
-                await sleep(this.opts.defaultDelay);
-                res.send();
-                return;
-              }
-              if (route.body) {
-                route.body;
-              }
-              if (variant.type === 'middleware') {
-                (req as any).mockType = 'middleware';
-                await sleep(variant.options.delay || this.opts.defaultDelay);
-                await variant.options.middleware(req, res, () => {});
-                return;
-              }
-              if (variant.type === 'file') {
-                (req as any).mockType = 'middleware';
-                await sleep(variant.options.delay || this.opts.defaultDelay);
-                res.statusCode = variant.options.status;
-                res.setHeader('Content-Type', variant.options.contentType);
-                if (variant.options.body) {
-                  res.send(typeof variant.options.body === 'string' ? Buffer.from(variant.options.body) : variant.options.body);
-                } else {
-                  const body = (await fs.readFile(variant.options.file!)).toString();
-                  res.send(body);
-                }
-                return;
-              }
-              // type === json
-              await sleep(variant.options.delay || this.opts.defaultDelay);
-              res.statusCode = variant.options.status;
-              res.setHeader('Content-Type', 'application/json;charset=UTF-8');
-              if (isFixtureGenerator(variant.options.body)) {
-                (req as any).mockType = `fixture/${variant.options.body.name}`;
-                const dirname = this.getFixtureFolderPath();
-                await variant.options.body.load({ dirname, type: 'json', sessionId: (req as any).mockSessionId });
-                await variant.options.body.save({ dirname, type: 'json', sessionId: (req as any).mockSessionId });
-                res.send(JSON.stringify(variant.options.body.get()));
-              } else {
-                (req as any).mockType = 'static';
-                res.send(JSON.stringify(variant.options.body));
-              }
-              return;
-            });
-          });
-      });
-      router(req, res, next);
-    });
-    return app;
   }
 }
 
