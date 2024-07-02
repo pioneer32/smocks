@@ -117,69 +117,73 @@ export const createMockApp = ({
       throw new Error(`No collection found for "${collectionName}"`);
     }
 
-    Object.entries(collections[collectionName]).forEach(([name, variantName]) => {
-      routes
-        .filter(({ id, variants }) => id === name && variants.find(({ id }) => id === variantName))
-        .forEach((route) => {
-          router[route.method.toLowerCase() as 'get' | 'post' | 'put'](route.url, async (req, res) => {
-            (req as any).mockRouteName = `${name}:${variantName}`;
-            // @ts-ignore
-            const { event = {}, context = {} } = getCurrentInvoke();
+    const overrides = await getCollectionMapper().getOverrides?.(mockSessionId);
 
-            if (getOpts().cors || getOpts().cors === undefined) {
-              res.setHeader('Access-Control-Allow-Headers', '*');
-              res.setHeader('Access-Control-Allow-Origin', '*');
-              res.setHeader('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
-            }
-            const variant = _.sample(
-              route.variants.filter(({ id }) => id === variantName).filter(({ options: { predicate } }) => (predicate ? predicate(req) : true))
-            );
-            if (!variant) {
-              res.statusCode = 404;
-              await sleep(getOpts().defaultDelay);
-              res.send();
-              return;
-            }
-            if (route.body) {
-              route.body;
-            }
-            if (variant.type === 'middleware') {
-              (req as any).mockType = 'middleware';
-              await sleep(variant.options.delay || getOpts().defaultDelay);
-              await variant.options.middleware(req, res, () => {});
-              return;
-            }
-            if (variant.type === 'file') {
-              (req as any).mockType = 'middleware';
+    Object.entries(collections[collectionName])
+      .map(([name, variantName]) => [name, overrides?.[name] || variantName])
+      .forEach(([name, variantName]) => {
+        routes
+          .filter(({ id, variants }) => id === name && variants.find(({ id }) => id === variantName))
+          .forEach((route) => {
+            router[route.method.toLowerCase() as 'get' | 'post' | 'put'](route.url, async (req, res) => {
+              (req as any).mockRouteName = `${name}:${variantName}`;
+              // @ts-ignore
+              const { event = {}, context = {} } = getCurrentInvoke();
+
+              if (getOpts().cors || getOpts().cors === undefined) {
+                res.setHeader('Access-Control-Allow-Headers', '*');
+                res.setHeader('Access-Control-Allow-Origin', '*');
+                res.setHeader('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
+              }
+              const variant = _.sample(
+                route.variants.filter(({ id }) => id === variantName).filter(({ options: { predicate } }) => (predicate ? predicate(req) : true))
+              );
+              if (!variant) {
+                res.statusCode = 404;
+                await sleep(getOpts().defaultDelay);
+                res.send();
+                return;
+              }
+              if (route.body) {
+                route.body;
+              }
+              if (variant.type === 'middleware') {
+                (req as any).mockType = 'middleware';
+                await sleep(variant.options.delay || getOpts().defaultDelay);
+                await variant.options.middleware(req, res, () => {});
+                return;
+              }
+              if (variant.type === 'file') {
+                (req as any).mockType = 'middleware';
+                await sleep(variant.options.delay || getOpts().defaultDelay);
+                res.statusCode = variant.options.status;
+                res.setHeader('Content-Type', variant.options.contentType);
+                if (variant.options.body) {
+                  res.send(typeof variant.options.body === 'string' ? Buffer.from(variant.options.body) : variant.options.body);
+                } else {
+                  const body = (await fs.readFile(variant.options.file!)).toString();
+                  res.send(body);
+                }
+                return;
+              }
+              // type === json
               await sleep(variant.options.delay || getOpts().defaultDelay);
               res.statusCode = variant.options.status;
-              res.setHeader('Content-Type', variant.options.contentType);
-              if (variant.options.body) {
-                res.send(typeof variant.options.body === 'string' ? Buffer.from(variant.options.body) : variant.options.body);
+              res.setHeader('Content-Type', 'application/json;charset=UTF-8');
+              if (isFixtureGenerator(variant.options.body)) {
+                (req as any).mockType = `fixture/${variant.options.body.name}`;
+                const dirname = getFixtureFolderPath();
+                await variant.options.body.load({ dirname, type: 'json', sessionId: (req as any).mockSessionId });
+                await variant.options.body.save({ dirname, type: 'json', sessionId: (req as any).mockSessionId });
+                res.send(JSON.stringify(variant.options.body.get()));
               } else {
-                const body = (await fs.readFile(variant.options.file!)).toString();
-                res.send(body);
+                (req as any).mockType = 'static';
+                res.send(JSON.stringify(variant.options.body));
               }
               return;
-            }
-            // type === json
-            await sleep(variant.options.delay || getOpts().defaultDelay);
-            res.statusCode = variant.options.status;
-            res.setHeader('Content-Type', 'application/json;charset=UTF-8');
-            if (isFixtureGenerator(variant.options.body)) {
-              (req as any).mockType = `fixture/${variant.options.body.name}`;
-              const dirname = getFixtureFolderPath();
-              await variant.options.body.load({ dirname, type: 'json', sessionId: (req as any).mockSessionId });
-              await variant.options.body.save({ dirname, type: 'json', sessionId: (req as any).mockSessionId });
-              res.send(JSON.stringify(variant.options.body.get()));
-            } else {
-              (req as any).mockType = 'static';
-              res.send(JSON.stringify(variant.options.body));
-            }
-            return;
+            });
           });
-        });
-    });
+      });
     router(req, res, next);
   });
   return app;

@@ -23,6 +23,24 @@ describe('Programmatic API', () => {
     });
   };
 
+  const setOverride = async (sessionId: string, route: string, variant: string) => {
+    // @ts-ignore
+    await fetch('http://localhost:3001/session/' + sessionId + `/` + route, {
+      method: 'PUT',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ variant }),
+    });
+  };
+
+  const deleteOverride = async (sessionId: string, route: string) => {
+    // @ts-ignore
+    await fetch('http://localhost:3001/session/' + sessionId + `/` + route + '/variant', {
+      method: 'DELETE',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({}),
+    });
+  };
+
   const getSessionDetails = async (sessionId: string) => {
     return await request('http://localhost:3001/session/' + sessionId);
   };
@@ -103,6 +121,28 @@ describe('Programmatic API', () => {
 
     // then get the user being unauthenticated => HTTP 200
     expect(await request('http://localhost:3000/user')).toMatchSnapshot('response');
+
+    expect(await getSessionDetails('default')).toMatchSnapshot('session-details');
+
+    // let's clean session requests:
+    await clearSessionRequests('default');
+  });
+
+  it('works with overrides', async () => {
+    expect(await getSessionDetails('default')).toMatchSnapshot('session-details');
+
+    // then try to get the user being unauthenticated => HTTP 401
+    expect(await request('http://localhost:3000/user')).toMatchSnapshot('response:base');
+
+    await setOverride('default', 'GET_USER', 'unauthenticated');
+
+    // then try to get the user being unauthenticated => HTTP 401
+    expect(await request('http://localhost:3000/user')).toMatchSnapshot('response:unauthenticated');
+
+    await deleteOverride('default', 'GET_USER');
+
+    // then try to get the user being unauthenticated => HTTP 401
+    expect(await request('http://localhost:3000/user')).toMatchSnapshot('response:base');
 
     expect(await getSessionDetails('default')).toMatchSnapshot('session-details');
 

@@ -36,6 +36,16 @@ export interface ICollectionMapper {
    * @description Sets the current collection name for the given session id
    */
   setCollectionName: (forSessionId: string, collectionName: string) => Promise<void>;
+
+  /**
+   * @description Returns overrides {[ROUTE_NAME]:VARIANT} for the given session id
+   */
+  getOverrides?: (forSessionId: string) => Promise<Record<string, string> | undefined>;
+
+  /**
+   * @description Sets overrides {[ROUTE_NAME]:VARIANT} for the given session id
+   */
+  setOverrides?: (forSessionId: string, overrides: Record<string, string | undefined>) => Promise<void>;
 }
 
 export interface IStatsStorage {

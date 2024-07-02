@@ -579,3 +579,79 @@ exports[`Programmatic API works with collections: session-details 9`] = `
   "text": "{"collectionName":"base","requests":[{"timestamp":1676886788388,"collection":"base","route":"GET_USER:success","request":{"method":"GET","url":"/user"},"response":{"statusCode":200}}]}",
 }
 `;
+
+exports[`Programmatic API works with overrides: response:base 1`] = `
+{
+  "headers": [
+    "access-control-allow-headers: *",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
+    "content-length: 30",
+    "content-type: application/json; charset=utf-8",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "{"id":1,"email":"foo@bar.baz"}",
+}
+`;
+
+exports[`Programmatic API works with overrides: response:base 2`] = `
+{
+  "headers": [
+    "access-control-allow-headers: *",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
+    "content-length: 30",
+    "content-type: application/json; charset=utf-8",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "{"id":1,"email":"foo@bar.baz"}",
+}
+`;
+
+exports[`Programmatic API works with overrides: response:unauthenticated 1`] = `
+{
+  "headers": [
+    "access-control-allow-headers: *",
+    "access-control-allow-methods: OPTIONS,POST,GET",
+    "access-control-allow-origin: *",
+    "connection: close",
+    "content-length: 2",
+    "content-type: application/json; charset=utf-8",
+    "x-powered-by: Express",
+  ],
+  "status": 401,
+  "text": "{}",
+}
+`;
+
+exports[`Programmatic API works with overrides: session-details 1`] = `
+{
+  "headers": [
+    "connection: close",
+    "content-length: 39",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"27-8/Q+IbW7jZ2tzRZSTJBF8yo08vI"",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "{"collectionName":"base","requests":[]}",
+}
+`;
+
+exports[`Programmatic API works with overrides: session-details 2`] = `
+{
+  "headers": [
+    "connection: close",
+    "content-length: 484",
+    "content-type: application/json; charset=utf-8",
+    "etag: W/"1e4-mRW00OjpW6lkfj0ezxYF2bJ/+xk"",
+    "x-powered-by: Express",
+  ],
+  "status": 200,
+  "text": "{"collectionName":"base","requests":[{"timestamp":1676886788388,"collection":"base","route":"GET_USER:success","request":{"method":"GET","url":"/user"},"response":{"statusCode":200}},{"timestamp":1676886788388,"collection":"base","route":"GET_USER:unauthenticated","request":{"method":"GET","url":"/user"},"response":{"statusCode":401}},{"timestamp":1676886788388,"collection":"base","route":"GET_USER:success","request":{"method":"GET","url":"/user"},"response":{"statusCode":200}}]}",
+}
+`;
