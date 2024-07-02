@@ -354,7 +354,7 @@ exports[`Programmatic API sends files: session-details 2`] = `
 }
 `;
 
-exports[`Programmatic API works: response 1`] = `
+exports[`Programmatic API works with collections: response 1`] = `
 {
   "headers": [
     "access-control-allow-headers: *",
@@ -380,7 +380,7 @@ exports[`Programmatic API works: response 1`] = `
 }
 `;
 
-exports[`Programmatic API works: response 2`] = `
+exports[`Programmatic API works with collections: response 2`] = `
 {
   "headers": [
     "access-control-allow-headers: *",
@@ -396,7 +396,7 @@ exports[`Programmatic API works: response 2`] = `
 }
 `;
 
-exports[`Programmatic API works: response 3`] = `
+exports[`Programmatic API works with collections: response 3`] = `
 {
   "headers": [
     "access-control-allow-headers: *",
@@ -422,7 +422,7 @@ exports[`Programmatic API works: response 3`] = `
 }
 `;
 
-exports[`Programmatic API works: response 4`] = `
+exports[`Programmatic API works with collections: response 4`] = `
 {
   "headers": [
     "access-control-allow-headers: *",
@@ -438,7 +438,7 @@ exports[`Programmatic API works: response 4`] = `
 }
 `;
 
-exports[`Programmatic API works: response 5`] = `
+exports[`Programmatic API works with collections: response 5`] = `
 {
   "headers": [
     "access-control-allow-headers: *",
@@ -454,7 +454,7 @@ exports[`Programmatic API works: response 5`] = `
 }
 `;
 
-exports[`Programmatic API works: session-details 1`] = `
+exports[`Programmatic API works with collections: session-details 1`] = `
 {
   "headers": [
     "connection: close",
@@ -468,7 +468,7 @@ exports[`Programmatic API works: session-details 1`] = `
 }
 `;
 
-exports[`Programmatic API works: session-details 2`] = `
+exports[`Programmatic API works with collections: session-details 2`] = `
 {
   "headers": [
     "connection: close",
@@ -482,7 +482,7 @@ exports[`Programmatic API works: session-details 2`] = `
 }
 `;
 
-exports[`Programmatic API works: session-details 3`] = `
+exports[`Programmatic API works with collections: session-details 3`] = `
 {
   "headers": [
     "connection: close",
@@ -496,7 +496,7 @@ exports[`Programmatic API works: session-details 3`] = `
 }
 `;
 
-exports[`Programmatic API works: session-details 4`] = `
+exports[`Programmatic API works with collections: session-details 4`] = `
 {
   "headers": [
     "connection: close",
@@ -510,7 +510,7 @@ exports[`Programmatic API works: session-details 4`] = `
 }
 `;
 
-exports[`Programmatic API works: session-details 5`] = `
+exports[`Programmatic API works with collections: session-details 5`] = `
 {
   "headers": [
     "connection: close",
@@ -524,7 +524,7 @@ exports[`Programmatic API works: session-details 5`] = `
 }
 `;
 
-exports[`Programmatic API works: session-details 6`] = `
+exports[`Programmatic API works with collections: session-details 6`] = `
 {
   "headers": [
     "connection: close",
@@ -538,7 +538,7 @@ exports[`Programmatic API works: session-details 6`] = `
 }
 `;
 
-exports[`Programmatic API works: session-details 7`] = `
+exports[`Programmatic API works with collections: session-details 7`] = `
 {
   "headers": [
     "connection: close",
@@ -552,7 +552,7 @@ exports[`Programmatic API works: session-details 7`] = `
 }
 `;
 
-exports[`Programmatic API works: session-details 8`] = `
+exports[`Programmatic API works with collections: session-details 8`] = `
 {
   "headers": [
     "connection: close",
@@ -566,7 +566,7 @@ exports[`Programmatic API works: session-details 8`] = `
 }
 `;
 
-exports[`Programmatic API works: session-details 9`] = `
+exports[`Programmatic API works with collections: session-details 9`] = `
 {
   "headers": [
     "connection: close",

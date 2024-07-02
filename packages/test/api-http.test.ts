@@ -59,7 +59,7 @@ describe('Programmatic API', () => {
     await clearSessionRequests('default');
   });
 
-  it('works', async () => {
+  it('works with collections', async () => {
     expect(await getSessionDetails('default')).toMatchSnapshot('session-details');
 
     await setCollection('default', 'unauthenticated');
