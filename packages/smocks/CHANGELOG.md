@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.39](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.38...v1.0.0-alpha.39) (2024-07-02)
+
+### Features
+
+- Introduce route level overrides ([740aad6](https://github.com/pioneer32/smocks/commit/740aad67deaeff7f17018980ae0c39a7c9f6c658))
+
 # [1.0.0-alpha.38](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.37...v1.0.0-alpha.38) (2024-05-27)
 
 ### Bug Fixes
