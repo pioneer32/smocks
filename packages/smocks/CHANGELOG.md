@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.40](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.39...v1.0.0-alpha.40) (2024-10-17)
+
+### Bug Fixes
+
+- All common HTTP verbs are now supported: OPTIONS,HEAD,GET,POST,PUT,PATCH,DELETE ([92fe1e2](https://github.com/pioneer32/smocks/commit/92fe1e2693fd06f3686cbeaaf55b00fe63cf8f6f))
+
 # [1.0.0-alpha.39](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.38...v1.0.0-alpha.39) (2024-07-02)
 
 ### Features
