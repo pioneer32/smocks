@@ -90,7 +90,7 @@ export const createMockApp = ({
         res.statusCode = 204;
         res.setHeader('Access-Control-Allow-Headers', '*');
         res.setHeader('Access-Control-Allow-Origin', '*');
-        res.setHeader('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
+        res.setHeader('Access-Control-Allow-Methods', 'OPTIONS,HEAD,GET,POST,PUT,PATCH,DELETE');
         sleep(getOpts().defaultDelay).then(() => {
           res.send();
         });
@@ -133,7 +133,7 @@ export const createMockApp = ({
               if (getOpts().cors || getOpts().cors === undefined) {
                 res.setHeader('Access-Control-Allow-Headers', '*');
                 res.setHeader('Access-Control-Allow-Origin', '*');
-                res.setHeader('Access-Control-Allow-Methods', 'OPTIONS,POST,GET');
+                res.setHeader('Access-Control-Allow-Methods', 'OPTIONS,HEAD,GET,POST,PUT,PATCH,DELETE');
               }
               const variant = _.sample(
                 route.variants.filter(({ id }) => id === variantName).filter(({ options: { predicate } }) => (predicate ? predicate(req) : true))

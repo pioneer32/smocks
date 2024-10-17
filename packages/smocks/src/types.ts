@@ -10,7 +10,7 @@ type Predicate = (req: Request<ParamsDictionary, any, any, ParsedQs, Record<stri
 export type RouteConfig = {
   id: string;
   url: string;
-  method: 'POST' | 'GET' | 'PUT' | 'DELETE';
+  method: 'OPTIONS' | 'HEAD' | 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
   body?: (type: string, payload: any) => boolean;
   variants: (
     | {
