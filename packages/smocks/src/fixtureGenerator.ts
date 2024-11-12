@@ -20,30 +20,28 @@ export interface IFixtureGenerator<T> {
 }
 
 const mergeFixtures = (saved: any, generated: any): any => {
-  if (Array.isArray(saved) !== Array.isArray(generated)) {
-    return generated;
-  }
-  if (typeof saved !== typeof generated) {
-    return generated;
-  }
-
   if (typeof saved === 'function' || typeof generated === 'function') {
     throw new Error('One of the fixtures contain a function. Only serializable data is allowed.');
   }
-  if (saved === generated) {
+  if (saved === undefined) {
+    return generated;
+  }
+  if (Array.isArray(saved) !== Array.isArray(generated)) {
     return saved;
   }
+
   if (Array.isArray(saved) && Array.isArray(generated)) {
     const res = [];
-    for (let i = 0; i < generated.length; i++) {
+    for (let i = 0; i < Math.max(saved.length, generated.length); i++) {
       res.push(mergeFixtures(saved[i], generated[i]));
     }
     return res;
   }
+
   if (typeof saved === 'object' && typeof generated === 'object') {
-    const generatedKeys = Object.keys(generated);
+    const keys = [...new Set([...Object.keys(generated), ...Object.keys(saved)])].sort();
     const res = {} as any;
-    for (const key of generatedKeys) {
+    for (const key of keys) {
       res[key] = mergeFixtures(saved[key], generated[key]);
     }
     return res;
