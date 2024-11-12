@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.42](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.41...v1.0.0-alpha.42) (2024-11-12)
+
+### Bug Fixes
+
+- nulls should not be considered objects by fixtureGenerator ([b47534a](https://github.com/pioneer32/smocks/commit/b47534a8efeb083e4e382067b355d8ee74634f52))
+
 # [1.0.0-alpha.41](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.40...v1.0.0-alpha.41) (2024-11-12)
 
 **Note:** Version bump only for package @pioneer32/smocks
