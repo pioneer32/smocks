@@ -66,6 +66,8 @@ describe('FixtureGenerator', () => {
         { a: 3, b: null },
         { a: 1, b: 2 },
       ],
+
+      [null, null, null],
     ].forEach(([saved, generated, expected]) => {
       it(`Given: ${JSON.stringify(saved)} is loaded. When ${JSON.stringify(generated)} is generated. Then it results in ${JSON.stringify(
         expected

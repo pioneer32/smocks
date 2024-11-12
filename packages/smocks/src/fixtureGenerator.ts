@@ -23,12 +23,6 @@ const mergeFixtures = (saved: any, generated: any): any => {
   if (typeof saved === 'function' || typeof generated === 'function') {
     throw new Error('One of the fixtures contain a function. Only serializable data is allowed.');
   }
-  if (saved === undefined) {
-    return generated;
-  }
-  if (Array.isArray(saved) !== Array.isArray(generated)) {
-    return saved;
-  }
 
   if (Array.isArray(saved) && Array.isArray(generated)) {
     const res = [];
@@ -38,7 +32,7 @@ const mergeFixtures = (saved: any, generated: any): any => {
     return res;
   }
 
-  if (typeof saved === 'object' && typeof generated === 'object') {
+  if (typeof saved === 'object' && saved !== null && typeof generated === 'object' && generated !== null) {
     const keys = [...new Set([...Object.keys(generated), ...Object.keys(saved)])].sort();
     const res = {} as any;
     for (const key of keys) {
@@ -46,7 +40,7 @@ const mergeFixtures = (saved: any, generated: any): any => {
     }
     return res;
   }
-  return saved;
+  return saved === undefined ? generated : saved;
 };
 
 const getDefaultFixturePersister = <T extends any>(): Pick<IFixtureGeneratorOptions<T>, 'load' | 'save'> => ({
