@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.43](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.42...v1.0.0-alpha.43) (2024-11-20)
+
+### Bug Fixes
+
+- persisted fixture array elements should only be merged when they are of object type on both sides ([1556c0e](https://github.com/pioneer32/smocks/commit/1556c0e4a65e332d8b02c2b212b7c9c6c7075f0e))
+
 # [1.0.0-alpha.42](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.41...v1.0.0-alpha.42) (2024-11-12)
 
 ### Bug Fixes
