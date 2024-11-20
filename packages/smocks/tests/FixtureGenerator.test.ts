@@ -1,8 +1,13 @@
 import { FixtureGenerator } from '../src/fixtureGenerator';
 
+// by the spec, JSON.stringify replaces undefined with null, here's a work-around:
+const jsonStringify = (val: any) =>
+  JSON.stringify(val, (_k: any, v: any) => (typeof v === 'undefined' ? '/* undefined */' : v)).replace('"/* undefined */"', 'undefined');
+
 describe('FixtureGenerator', () => {
   describe('Merging saved with generated', () => {
     [
+      // primitives
       [undefined, 'a', 'a'],
       ['a', undefined, 'a'],
       ['a', 'b', 'a'],
@@ -12,7 +17,9 @@ describe('FixtureGenerator', () => {
       [[], 'a', []],
       ['a', {}, 'a'],
       [{}, 'a', {}],
+      [null, null, null],
 
+      // objects
       [{}, { a: 1 }, { a: 1 }],
       [{ a: 1 }, { a: undefined }, { a: 1 }],
       [{ a: 1 }, {}, { a: 1 }],
@@ -23,12 +30,30 @@ describe('FixtureGenerator', () => {
       [{ a: [] }, { a: 1 }, { a: [] }],
       [{ a: 1 }, { a: {} }, { a: 1 }],
       [{ a: {} }, { a: 1 }, { a: {} }],
+      [{ a: 1 }, { b: 2 }, { a: 1, b: 2 }],
+      [{ a: 1 }, { a: 2, b: 3 }, { a: 1, b: 3 }],
+      [
+        { a: 1, b: 2 },
+        { a: 3, b: 4 },
+        { a: 1, b: 2 },
+      ],
+      [
+        { a: 1, b: null },
+        { a: 3, b: 4 },
+        { a: 1, b: null },
+      ],
+      [
+        { a: 1, b: 2 },
+        { a: 3, b: null },
+        { a: 1, b: 2 },
+      ],
 
-      [[], ['a'], ['a']],
+      // arrays
+      [[], ['a'], []],
       [
         [undefined, 'b'],
         ['a', 'b'],
-        ['a', 'b'],
+        [undefined, 'b'],
       ],
       [
         [undefined, 'b'],
@@ -48,30 +73,15 @@ describe('FixtureGenerator', () => {
       [['a'], [], ['a']],
       [['a', 'b'], ['b'], ['a', 'b']],
 
-      [{}, { a: 1 }, { a: 1 }],
-      [{ a: 1 }, { b: 2 }, { a: 1, b: 2 }],
-      [{ a: 1 }, { a: 2, b: 3 }, { a: 1, b: 3 }],
+      [[{ a: 1 }, { b: 1 }], [{ a: 2, b: 3 }], [{ a: 1, b: 3 }, { b: 1 }]],
+      [[null, { b: 1 }], [{ a: 2, b: 3 }], [null, { b: 1 }]],
       [
-        { a: 1, b: 2 },
-        { a: 3, b: 4 },
-        { a: 1, b: 2 },
+        [null, { b: 1 }],
+        [undefined, { a: 2, b: 3 }],
+        [null, { a: 2, b: 1 }],
       ],
-      [
-        { a: 1, b: null },
-        { a: 3, b: 4 },
-        { a: 1, b: null },
-      ],
-      [
-        { a: 1, b: 2 },
-        { a: 3, b: null },
-        { a: 1, b: 2 },
-      ],
-
-      [null, null, null],
     ].forEach(([saved, generated, expected]) => {
-      it(`Given: ${JSON.stringify(saved)} is loaded. When ${JSON.stringify(generated)} is generated. Then it results in ${JSON.stringify(
-        expected
-      )}`, async () => {
+      it(`Given: ${jsonStringify(saved)} is loaded. When ${jsonStringify(generated)} is generated. Then it results in ${jsonStringify(expected)}`, async () => {
         const save = jest.fn();
         const load = jest.fn();
         load.mockResolvedValueOnce(saved);

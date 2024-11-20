@@ -19,15 +19,19 @@ export interface IFixtureGenerator<T> {
   get(): T;
 }
 
+const isObject = (val: any): val is Object => typeof val === 'object' && !Array.isArray(val) && val !== null;
+
 const mergeFixtures = (saved: any, generated: any): any => {
   if (typeof saved === 'function' || typeof generated === 'function') {
     throw new Error('One of the fixtures contain a function. Only serializable data is allowed.');
   }
 
   if (Array.isArray(saved) && Array.isArray(generated)) {
-    const res = [];
-    for (let i = 0; i < Math.max(saved.length, generated.length); i++) {
-      res.push(mergeFixtures(saved[i], generated[i]));
+    const res = [...saved];
+    for (let i = 0; i < saved.length; i++) {
+      if (isObject(saved[i]) && isObject(generated[i])) {
+        res[i] = mergeFixtures(saved[i], generated[i]);
+      }
     }
     return res;
   }
