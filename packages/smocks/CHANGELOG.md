@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-alpha.44](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.43...v1.0.0-alpha.44) (2025-02-13)
+
+### Bug Fixes
+
+- on win machines **dirname and **filename inside routes were incorrect ([b3a962c](https://github.com/pioneer32/smocks/commit/b3a962c18a269581f2da2f0e7ee30322b2a500ca))
+- prevent cache from nesting the whole tree ([5fab6d5](https://github.com/pioneer32/smocks/commit/5fab6d5c03c3ea6e3a620e9c26dd0820128b4f38))
+
 # [1.0.0-alpha.43](https://github.com/pioneer32/smocks/compare/v1.0.0-alpha.42...v1.0.0-alpha.43) (2024-11-20)
 
 ### Bug Fixes
