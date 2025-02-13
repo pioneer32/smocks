@@ -11,9 +11,9 @@ const transpile = async (tsFilePath: string, outputJsFilePath: string) => {
   await fs.mkdir(path.dirname(outputJsFilePath), { recursive: true });
   // The route files often contain __dirname and __filename. Given we they are imported from the cache, those constants point to the cache path, which is not what the route developers expect
   // Let's "fix" it
-  const fixedTsCode = `const __ORIG__filename = "${tsFilePath}"; const __ORIG__dirname = "${path.dirname(tsFilePath)}";\n${tsCode
-    .replace(/__filename/g, '__ORIG__filename')
-    .replace(/__dirname/g, '__ORIG__dirname')}`;
+  const fixedTsCode = `const __ORIG__filename = "${tsFilePath.replace(/\\/g, '\\\\')}"; const __ORIG__dirname = "${path
+    .dirname(tsFilePath)
+    .replace(/\\/g, '\\\\')}";\n${tsCode.replace(/__filename/g, '__ORIG__filename').replace(/__dirname/g, '__ORIG__dirname')}`;
   const jsOutput = tsc.transpileModule(fixedTsCode, {
     compilerOptions: {
       module: USE_ESM ? tsc.ModuleKind.ESNext : tsc.ModuleKind.CommonJS,
