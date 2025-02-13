@@ -2,6 +2,7 @@ import * as path from 'node:path';
 import tsc from 'typescript';
 import { promises as fs } from 'node:fs';
 import { fileContentHash, fileExists } from './utils.js';
+import crypto from 'node:crypto';
 
 const USE_ESM = typeof require === 'undefined';
 
@@ -36,10 +37,10 @@ export const load = async (tsModulePath: string, options: Options = {}) => {
   const compiledJsExtension = USE_ESM ? 'mjs' : 'cjs';
 
   const tsPath = path.resolve(cwd, tsModulePath);
+  const tsPathHash = crypto.createHash('md5').update(tsPath).digest('hex');
   const tsFileHash = await fileContentHash(tsPath);
 
-  const outputJsFilePath =
-    path.join(cacheDir, process.platform === `win32` ? tsPath.split(`:`)[1]! : tsPath).replace(/\.[tj]sx?$/, '') + `.${tsFileHash}.${compiledJsExtension}`;
+  const outputJsFilePath = path.join(cacheDir, `${tsPathHash}_${tsFileHash}.${compiledJsExtension}`);
 
   if (!(await fileExists(outputJsFilePath))) {
     await transpile(tsPath, outputJsFilePath);
